@@ -9,6 +9,7 @@ use team_game_system\model\Game;
 use team_game_system\model\GameId;
 use team_game_system\model\TeamId;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
+use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\CreateGameService;
 use team_game_system\service\JoinGameService;
 use team_game_system\service\StartGameService;
@@ -23,6 +24,7 @@ class TeamGameSystem
 
     static function startGame(GameId $gameId): void {
         StartGameService::execute($gameId);
+        StartGamePMMPService::execute($gameId);
     }
 
     static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId): void {
