@@ -56,4 +56,11 @@ class Game
     public function start(): void {
         $this->isStarted = true;
     }
+
+    /**
+     * @return bool
+     */
+    public function isStarted(): bool {
+        return $this->isStarted;
+    }
 }
