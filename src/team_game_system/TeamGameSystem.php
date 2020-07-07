@@ -8,11 +8,13 @@ use pocketmine\Player;
 use team_game_system\model\Game;
 use team_game_system\model\GameId;
 use team_game_system\model\TeamId;
+use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\service\CreateGameService;
 use team_game_system\service\JoinGameService;
 use team_game_system\service\StartGameService;
 use team_game_system\store\GameStore;
 
+//API層
 class TeamGameSystem
 {
     static function createGame(Game $game): void {
@@ -30,5 +32,10 @@ class TeamGameSystem
         if ($game->isStarted()) {
             //TODO : 途中参加
         }
+    }
+
+    //TODO:おそらく消える、こちらのListenerで処理される予定
+    static function setSpawnPoint(Player $player):void {
+        SetSpawnPMMPService::execute($player);
     }
 }
