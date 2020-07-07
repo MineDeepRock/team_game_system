@@ -5,15 +5,20 @@ namespace team_game_system\model;
 
 class Score
 {
-    private $teamId;
     private $value;
 
-    public function __construct(TeamId $teamId, int $value) {
-        $this->teamId = $teamId;
+    public function __construct(int $value) {
         $this->value = $value;
     }
 
-    static function asNew(TeamId $teamId): Score {
-        return new Score($teamId, 0);
+    static function asNew(): Score {
+        return new Score(0);
+    }
+
+    /**
+     * @return int
+     */
+    public function getValue(): int {
+        return $this->value;
     }
 }
