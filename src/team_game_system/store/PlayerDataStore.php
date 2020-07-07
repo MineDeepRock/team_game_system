@@ -5,6 +5,7 @@ namespace team_game_system\store;
 
 
 use team_game_system\data_model\PlayerData;
+use team_game_system\model\TeamId;
 
 class PlayerDataStore
 {
@@ -17,12 +18,25 @@ class PlayerDataStore
         self::$playersData[] = $playerData;
     }
 
-    static function findByName(string $name): PlayerData {
-        $results = array_filter(self::$playersData, function ($playerData) use ($name) {
-            return $playerData->getName() === $name;
-        });
+    static function findByName(string $name): ?PlayerData {
+        foreach (self::$playersData as $playerData) {
+            if($playerData->getName() === $name) {
+                return $playerData;
+            }
+        }
 
-        return $results[0];
+        return null;
+    }
+
+    static function getTeamPlayers(TeamId $teamId): array {
+        $result = [];
+        foreach (self::$playersData as $playerData) {
+            if($playerData->getTeamId()->equals($teamId)) {
+                $result[] = $playerData;
+            }
+        }
+
+        return $result;
     }
 
     static function remove(string $name): void {
