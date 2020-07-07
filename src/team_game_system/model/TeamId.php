@@ -18,4 +18,11 @@ class TeamId
     public function __toString() {
         return $this->value;
     }
+
+    public function equals(?TeamId $id): bool {
+        if ($id === null)
+            return false;
+
+        return $this->value === $id->value;
+    }
 }

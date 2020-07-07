@@ -19,4 +19,11 @@ class GameId
     public function __toString() {
         return $this->value;
     }
+
+    public function equals(?GameId $id): bool {
+        if ($id === null)
+            return false;
+
+        return $this->value === $id->value;
+    }
 }
