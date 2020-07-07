@@ -1,0 +1,14 @@
+{
+  "name": "",
+  "spawn_points": {
+    "team_id1": [
+      {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    ],
+    "team_id2": [],
+    "team_id3": []
+  }
+}
