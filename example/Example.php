@@ -4,6 +4,7 @@ namespace team_game_system\example;
 
 
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Color;
@@ -12,7 +13,9 @@ use team_game_system\model\Score;
 use team_game_system\model\Team;
 use team_game_system\pmmp\event\AddedScoreEvent;
 use team_game_system\pmmp\event\FinishedGameEvent;
+use team_game_system\pmmp\event\PlayerJoinGameEvent;
 use team_game_system\pmmp\event\PlayerKilledPlayerEvent;
+use team_game_system\pmmp\event\StartGameEvent;
 use team_game_system\pmmp\event\UpdatedGameTimerEvent;
 use team_game_system\store\GameStore;
 use team_game_system\TeamGameSystem;
@@ -49,6 +52,25 @@ class Example extends PluginBase implements Listener
         //ScoreBoard更新とか勝利判定
     }
 
+    public function onStartedGame(StartGameEvent $event) {
+        $gameId = $event->getGameId();
+        $playersData = TeamGameSystem::getGamePlayersData($gameId);
+        foreach ($playersData as $playerData) {
+            $player = $this->getServer()->getPlayer($playerData->getName());
+
+            TeamGameSystem::setSpawnPoint($player);
+
+            //ワールド間をテレポートさせる場合は↓が必要
+            $game = TeamGameSystem::getGame($gameId);
+            $level = $this->getServer()->getLevelByName($game->getMap()->getName());
+            $player->teleport($level->getSpawnLocation());
+            //ワールド間をテレポートさせる場合は↑が必要
+
+            //アイテムのセットなど.....
+            $player->teleport($player->getSpawn());
+        }
+    }
+
     public function onFinishedGame(FinishedGameEvent $event): void {
         $game = $event->getGame();
         $playersData = $event->getPlayersData();
@@ -67,5 +89,21 @@ class Example extends PluginBase implements Listener
         //指定
         $team = array_rand($game->getTeams());
         TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
+    }
+
+    public function onJoinGame(PlayerJoinGameEvent $event) {
+        $player = $event->getPlayer();
+        $gameId = $event->getGameId();
+
+        //10人でスタート
+        $playersCount = TeamGameSystem::getGamePlayersData($gameId);
+        if ($playersCount === 10) {
+            TeamGameSystem::startGame($this->getScheduler(), $gameId);
+        }
+    }
+
+    public function onRespawn(PlayerRespawnEvent $event){
+        $player = $event->getPlayer();
+        //アイテムのセットなど....
     }
 }
