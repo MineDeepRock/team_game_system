@@ -5,20 +5,24 @@ namespace team_game_system;
 
 
 use pocketmine\Player;
+use team_game_system\data_model\PlayerData;
 use team_game_system\model\Game;
 use team_game_system\model\GameId;
 use team_game_system\model\Map;
 use team_game_system\model\Score;
 use team_game_system\model\TeamId;
 use team_game_system\pmmp\service\AddScorePMMPService;
+use team_game_system\pmmp\service\FinishGamePMMPService;
 use team_game_system\pmmp\service\JoinGamePMMPService;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\AddScoreService;
 use team_game_system\service\CreateGameService;
+use team_game_system\service\FinishGameService;
 use team_game_system\service\JoinGameService;
 use team_game_system\service\SelectMapService;
 use team_game_system\service\StartGameService;
+use team_game_system\store\PlayerDataStore;
 
 //API層
 class TeamGameSystem
@@ -32,7 +36,12 @@ class TeamGameSystem
         StartGamePMMPService::execute($gameId);
     }
 
-    static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId): void {
+    static function finishedGame(GameId $gameId):void {
+        FinishGameService::execute($gameId);
+        FinishGamePMMPService::execute($gameId);
+    }
+
+    static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId = null): void {
         JoinGameService::execute($player, $gameId, $teamId);
         JoinGamePMMPService::execute($player, $gameId);
     }
