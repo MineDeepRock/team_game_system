@@ -3,6 +3,13 @@
 namespace team_game_system\model;
 
 
+use pocketmine\scheduler\ClosureTask;
+use pocketmine\scheduler\TaskHandler;
+use pocketmine\scheduler\TaskScheduler;
+use team_game_system\pmmp\event\UpdatedGameTimerEvent;
+use team_game_system\service\FinishGameService;
+use team_game_system\store\GameStore;
+
 class Game
 {
     /**
@@ -18,23 +25,33 @@ class Game
      */
     private $teams;
     /**
-     * @var Score
+     * @var Score|null
      */
     private $maxScore;
     /**
-     * @var int
+     * @var int|null
      */
     private $maxPlayersCount;
     /**
-     * @var int
+     * @var int|null
      * second
      */
     private $timeLimit;
+    /**
+     * @var int|null
+     * second
+     */
+    private $elapsedTime;
 
     private $isStarted;
     private $isClosed;
 
-    public function __construct(GameId $id, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null) {
+    /**
+     * @var TaskHandler
+     */
+    private $timerHandler;
+
+    public function __construct(GameId $id, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null, ?int $elapsedTime = null) {
         $this->id = $id;
         $this->map = $map;
         $this->teams = $teams;
@@ -44,10 +61,11 @@ class Game
         $this->maxScore = $maxScore;
         $this->maxPlayersCount = $maxPlayersCount;
         $this->timeLimit = $timeLimit;
+        $this->elapsedTime = $elapsedTime;
     }
 
     static function asNew(Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null): Game {
-        return new Game(GameId::asNew(), $map, $teams, $maxScore, $maxPlayersCount, $timeLimit);
+        return new Game(GameId::asNew(), $map, $teams, $maxScore, $maxPlayersCount, $timeLimit, 0);
     }
 
     /**
@@ -71,12 +89,23 @@ class Game
         return $this->teams;
     }
 
-    public function start(): void {
+    public function start(TaskScheduler $scheduler): void {
         $this->isStarted = true;
+
+        //TODO:これ本当にここか？
+        $this->timerHandler = $scheduler->scheduleDelayedRepeatingTask(new ClosureTask(function (int $currentTick): void {
+            $this->elapsedTime += 1;
+            $event = new UpdatedGameTimerEvent($this->id, $this->timeLimit, $this->elapsedTime);
+            $event->call();
+            if ($this->timeLimit <= $this->elapsedTime) {
+                FinishGameService::execute($this->id);
+            }
+        }), 20, 20);
     }
 
     public function close(): void {
         $this->isClosed = true;
+        $this->timerHandler->cancel();
     }
 
     /**
