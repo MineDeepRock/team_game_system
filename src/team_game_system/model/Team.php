@@ -24,7 +24,7 @@ class Team
      */
     private $score;
 
-    public function __construct(TeamId $id, string $name, Color $teamColor,Score $score) {
+    public function __construct(TeamId $id, string $name, Color $teamColor, Score $score) {
         $this->id = $id;
         $this->name = $name;
         $this->teamColor = $teamColor;
@@ -32,7 +32,7 @@ class Team
     }
 
     static function asNew(string $name, Color $teamColor): Team {
-        return new Team(TeamId::asNew(), $name, $teamColor,Score::asNew());
+        return new Team(TeamId::asNew(), $name, $teamColor, Score::asNew());
     }
 
     /**
@@ -47,5 +47,16 @@ class Team
      */
     public function getId(): TeamId {
         return $this->id;
+    }
+
+    public function add(Score $score): void {
+        $this->score += $score->getValue();
+    }
+
+    /**
+     * @param Score $score
+     */
+    public function setScore(Score $score): void {
+        $this->score = $score;
     }
 }
