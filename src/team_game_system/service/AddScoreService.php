@@ -21,6 +21,7 @@ class AddScoreService
         $team->add($score);
         AddScorePMMPService::execute($gameId, $teamId, $score);
 
+        if ($game->getMaxScore() === null) return;
         if($team->getScore()->getValue() >= $game->getMaxScore()->getValue()) {
             FinishGameService::execute($gameId);
         }
