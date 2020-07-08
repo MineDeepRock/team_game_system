@@ -5,6 +5,7 @@ namespace team_game_system;
 
 
 use pocketmine\Player;
+use pocketmine\scheduler\TaskScheduler;
 use team_game_system\data_model\PlayerData;
 use team_game_system\model\Game;
 use team_game_system\model\GameId;
@@ -18,6 +19,7 @@ use team_game_system\service\FinishGameService;
 use team_game_system\service\JoinGameService;
 use team_game_system\service\SelectMapService;
 use team_game_system\service\StartGameService;
+use team_game_system\store\GameStore;
 use team_game_system\store\PlayerDataStore;
 
 //API層
@@ -27,8 +29,8 @@ class TeamGameSystem
         CreateGameService::execute($game);
     }
 
-    static function startGame(GameId $gameId): void {
-        StartGameService::execute($gameId);
+    static function startGame(TaskScheduler $scheduler, GameId $gameId): void {
+        StartGameService::execute($scheduler, $gameId);
     }
 
     static function finishedGame(GameId $gameId): void {
@@ -65,5 +67,9 @@ class TeamGameSystem
 
     static function getTeamPlayersData(TeamId $teamId): array {
         return PlayerDataStore::getTeamPlayers($teamId);
+    }
+
+    static function getGame(GameId $gameId): ?Game {
+        return GameStore::findById($gameId);
     }
 }
