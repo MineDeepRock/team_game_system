@@ -7,11 +7,14 @@ namespace team_game_system;
 use pocketmine\Player;
 use team_game_system\model\Game;
 use team_game_system\model\GameId;
+use team_game_system\model\Map;
 use team_game_system\model\TeamId;
+use team_game_system\pmmp\service\JoinGamePMMPService;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\CreateGameService;
 use team_game_system\service\JoinGameService;
+use team_game_system\service\SelectMapService;
 use team_game_system\service\StartGameService;
 use team_game_system\store\GameStore;
 
@@ -29,15 +32,18 @@ class TeamGameSystem
 
     static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId): void {
         JoinGameService::execute($player, $gameId, $teamId);
-        $game = GameStore::findById($gameId);
-
-        if ($game->isStarted()) {
-            //TODO : 途中参加
-        }
+        JoinGamePMMPService::execute($player,$gameId);
     }
 
-    //TODO:おそらく消える、こちらのListenerで処理される予定
     static function setSpawnPoint(Player $player):void {
         SetSpawnPMMPService::execute($player);
+    }
+
+    static function findMapByName(string $name):Map {
+        return SelectMapService::byName($name);
+    }
+
+    static function randomSelectMap():Map {
+        return SelectMapService::random();
     }
 }
