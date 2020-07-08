@@ -53,11 +53,9 @@ class PlayerDataStore
     }
 
     static function remove(string $name): void {
-        $results = array_filter(self::$playersData, function ($playerData) use ($name) {
-            return $playerData->getName() !== $name;
-        });
-
-        self::$playersData = $results;
+        foreach (self::$playersData as $playerData) {
+            if ($playerData->getName() === $name) unset($playerData);
+        }
     }
 
     static function update(PlayerData $playerData): void {
