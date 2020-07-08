@@ -92,4 +92,25 @@ class Game
     public function isClosed(): bool {
         return $this->isClosed;
     }
+
+    /**
+     * @return Score
+     */
+    public function getMaxScore(): Score {
+        return $this->maxScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxPlayersCount(): int {
+        return $this->maxPlayersCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeLimit(): int {
+        return $this->timeLimit;
+    }
 }
