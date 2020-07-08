@@ -62,4 +62,16 @@ class TeamGameSystem
         AddScoreService::execute($gameId, $teamId, $score);
         AddScorePMMPService::execute($gameId, $teamId, $score);
     }
+
+    static function getPlayerData(Player $player): PlayerData {
+        return PlayerDataStore::findByName($player->getName());
+    }
+
+    static function getGamePlayersData(GameId $gameId): array {
+        return PlayerDataStore::getGamePlayers($gameId);
+    }
+
+    static function getTeamPlayersData(TeamId $teamId): array {
+        return PlayerDataStore::getTeamPlayers($teamId);
+    }
 }
