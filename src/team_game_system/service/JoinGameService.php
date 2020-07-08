@@ -20,7 +20,9 @@ class JoinGameService
         if ($game->isClosed()) return false;
 
         $playersCount = count(PlayerDataStore::getGamePlayers($gameId));
-        if ($game->getMaxPlayersCount() === $playersCount) return false;
+        if ($game->getMaxPlayersCount() !== null) {
+            if ($game->getMaxPlayersCount() === $playersCount) return false;
+        }
 
         if ($teamId === null) {
             $teamId = SortTeamsByPlayersService::execute($game->getTeams())[0];
