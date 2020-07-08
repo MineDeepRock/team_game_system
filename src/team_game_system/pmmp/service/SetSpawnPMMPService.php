@@ -20,6 +20,6 @@ class SetSpawnPMMPService
             }
         }
 
-        $player->setSpawn(array_rand($spawnPoints)->getPosition());
+        $player->setSpawn($spawnPoints[array_rand($spawnPoints)]->getPosition());
     }
 }

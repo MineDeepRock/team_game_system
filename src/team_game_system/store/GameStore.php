@@ -32,6 +32,9 @@ class GameStore
         return $results[0];
     }
 
+    /**
+     * @return array|Game[]
+     */
     static function getAll(): array {
         return self::$games;
     }

@@ -28,6 +28,6 @@ class SelectMapService
 
         closedir($dh);
 
-        return array_rand($maps);
+        return $maps[array_rand($maps)];
     }
 }

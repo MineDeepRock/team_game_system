@@ -83,11 +83,12 @@ class Example extends PluginBase implements Listener
 
     public function joinGame(Player $player) {
         //人数が一番少ないチーム
-        $game = array_rand(GameStore::getAll());
+        $games = GameStore::getAll();
+        $game = $games[array_rand($games)];
         TeamGameSystem::joinGame($player, $game->getId());
 
         //指定
-        $team = array_rand($game->getTeams());
+        $team = $game->getTeams()[array_rand($game->getTeams())];
         TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
     }
 

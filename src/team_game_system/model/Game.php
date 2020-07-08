@@ -83,7 +83,7 @@ class Game
     }
 
     /**
-     * @return Team[]
+     * @return array|Team[]
      */
     public function getTeams(): array {
         return $this->teams;
