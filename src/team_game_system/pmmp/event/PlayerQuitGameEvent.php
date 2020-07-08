@@ -6,6 +6,7 @@ namespace team_game_system\pmmp\event;
 
 use pocketmine\event\Event;
 use pocketmine\Player;
+use team_game_system\model\GameId;
 
 class PlayerQuitGameEvent extends Event
 {
@@ -14,8 +15,14 @@ class PlayerQuitGameEvent extends Event
      */
     private $player;
 
-    public function __construct(Player $player) {
+    /**
+     * @var GameId
+     */
+    private $gameId;
+
+    public function __construct(Player $player, GameId $gameId) {
         $this->player = $player;
+        $this->gameId = $gameId;
     }
 
     /**
@@ -23,5 +30,12 @@ class PlayerQuitGameEvent extends Event
      */
     public function getPlayer(): Player {
         return $this->player;
+    }
+
+    /**
+     * @return GameId
+     */
+    public function getGameId(): GameId {
+        return $this->gameId;
     }
 }
