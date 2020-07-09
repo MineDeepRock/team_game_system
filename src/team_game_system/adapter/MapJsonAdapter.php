@@ -21,4 +21,26 @@ class MapJsonAdapter
 
         return new Map($json["name"], $json["level_name"], $spawnPoints);
     }
+
+    static function encode(Map $map): array {
+        $json = [
+            "name" => $map->getName(),
+            "level_name" => $map->getLevelName(),
+            "spawn_points" => []
+        ];
+
+        foreach ($map->getSpawnPoints() as $teamSpawnPoint) {
+            /** @var SpawnPoint $spawnPoint */
+            foreach ($teamSpawnPoint as $spawnPoint) {
+                $pos = $spawnPoint->getPosition();
+                $json["spawn_points"][strval($spawnPoint->getTeamId())][] = [
+                    "x" => $pos->getX(),
+                    "y" => $pos->getY(),
+                    "z" => $pos->getZ(),
+                ];
+            }
+        }
+
+        return $json;
+    }
 }
