@@ -19,6 +19,6 @@ class MapJsonAdapter
             }, $team_spawn_points);
         }
 
-        return new Map($json["name"], $spawnPoints);
+        return new Map($json["name"], $json["level_name"], $spawnPoints);
     }
 }

@@ -12,12 +12,17 @@ class Map
      */
     private $name;
     /**
+     * @var string
+     */
+    private $levelName;
+    /**
      * @var SpawnPoint[]
      */
     private $spawnPoints;
 
-    public function __construct(string $name, array $spawnPoints) {
+    public function __construct(string $name, string $levelName, array $spawnPoints) {
         $this->name = $name;
+        $this->levelName = $levelName;
         $this->spawnPoints = $spawnPoints;
     }
 
@@ -33,5 +38,12 @@ class Map
      */
     public function getSpawnPoints(): array {
         return $this->spawnPoints;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLevelName(): string {
+        return $this->levelName;
     }
 }
