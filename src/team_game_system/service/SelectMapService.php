@@ -17,6 +17,12 @@ class SelectMapService
     }
 
     static function random(): Map {
+        $maps = self::all();
+
+        return $maps[array_rand($maps)];
+    }
+
+    static function all(): array {
         $maps = [];
         $dh = opendir(self::PATH);
         while (($fileName = readdir($dh)) !== false) {
@@ -28,6 +34,6 @@ class SelectMapService
 
         closedir($dh);
 
-        return $maps[array_rand($maps)];
+        return $maps;
     }
 }
