@@ -45,12 +45,12 @@ class TeamGameSystem
         SetSpawnPMMPService::execute($player);
     }
 
-    static function findMapByName(string $name): Map {
-        return SelectMapService::byName($name);
+    static function findMapByName(string $name,array $teams): Map {
+        return SelectMapService::byName($name,$teams);
     }
 
-    static function randomSelectMap(): Map {
-        return SelectMapService::random();
+    static function randomSelectMap(array $teams): Map {
+        return SelectMapService::random($teams);
     }
 
     static function addScore(GameId $gameId, TeamId $teamId, Score $score): void {

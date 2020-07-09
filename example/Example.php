@@ -23,13 +23,13 @@ use team_game_system\TeamGameSystem;
 class Example extends PluginBase implements Listener
 {
     public function onEnable() {
-        $map = TeamGameSystem::randomSelectMap();
         $teams = [
             Team::asNew("Red", new Color(255, 0, 0)),
             Team::asNew("Blue", new Color(0, 0, 255)),
             Team::asNew("Green", new Color(0, 255, 0)),
         ];
         $maxScore = new Score(25);
+        $map = TeamGameSystem::randomSelectMap();
         $game = Game::asNew($map, $teams, $maxScore);
 
         TeamGameSystem::createGame($game);
