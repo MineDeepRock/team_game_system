@@ -29,7 +29,7 @@ class Example extends PluginBase implements Listener
             Team::asNew("Green", new Color(0, 255, 0)),
         ];
         $maxScore = new Score(25);
-        $map = TeamGameSystem::randomSelectMap($teams);
+        $map = TeamGameSystem::selectMap("MapName",$teams);
         $game = Game::asNew($map, $teams, $maxScore);
 
         TeamGameSystem::createGame($game);
