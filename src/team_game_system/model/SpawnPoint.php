@@ -9,24 +9,12 @@ use pocketmine\math\Vector3;
 class SpawnPoint
 {
     /**
-     * @var TeamId
-     */
-    private $teamId;
-    /**
      * @var Vector3
      */
     private $position;
 
-    public function __construct(TeamId $teamId, Vector3 $position) {
-        $this->teamId = $teamId;
+    public function __construct(Vector3 $position) {
         $this->position = $position;
-    }
-
-    /**
-     * @return TeamId
-     */
-    public function getTeamId(): TeamId {
-        return $this->teamId;
     }
 
     /**

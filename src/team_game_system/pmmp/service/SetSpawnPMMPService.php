@@ -13,13 +13,8 @@ class SetSpawnPMMPService
     static function execute(Player $player): void {
         $playerData = PlayerDataStore::findByName($player->getName());
         $game = GameStore::findById($playerData->getGameId());
-        $spawnPoints = [];
-        foreach ($game->getMap()->getSpawnPoints() as $spawnPoint){
-            if ($spawnPoint->getTeamId()->equals($playerData->getTeamId())){
-                $spawnPoints[] = $spawnPoint;
-            }
-        }
+        $spawnPoints = $game->getMap()->getSpawnPoints()[strval($playerData->getTeamId())];
 
-        $player->setSpawn($spawnPoints[array_rand($spawnPoints)]->getPosition());
+        $player->setSpawn($spawnPoints[mt_rand(0, count($spawnPoints) - 1)]->getPosition());
     }
 }

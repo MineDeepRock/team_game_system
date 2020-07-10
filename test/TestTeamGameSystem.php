@@ -6,7 +6,6 @@ use pocketmine\math\Vector3;
 use pocketmine\utils\Color;
 use team_game_system\DataFolderPath;
 use team_game_system\model\Game;
-use team_game_system\model\GameId;
 use team_game_system\model\Map;
 use team_game_system\model\Score;
 use team_game_system\model\SpawnPoint;
@@ -18,27 +17,27 @@ use team_game_system\TeamGameSystem;
 class TestTeamGameSystem extends TestCase
 {
     public function testCreateMap() {
-        $redTeam = Team::asNew("Red", new Color(255, 0, 0));
-        $blueTeam = Team::asNew("Blue", new Color(0, 0, 255));
-        $green = Team::asNew("Blue", new Color(0, 255, 0));
-
-
         $map = new Map("map", "map", [
-            new SpawnPoint($redTeam->getId(), new Vector3(1, 0, 0)),
-            new SpawnPoint($redTeam->getId(), new Vector3(2, 0, 0)),
-            new SpawnPoint($redTeam->getId(), new Vector3(3, 0, 0)),
-
-            new SpawnPoint($blueTeam->getId(), new Vector3(0, 1, 0)),
-            new SpawnPoint($blueTeam->getId(), new Vector3(0, 2, 0)),
-            new SpawnPoint($blueTeam->getId(), new Vector3(0, 3, 0)),
-
-            new SpawnPoint($green->getId(), new Vector3(0, 0, 1)),
-            new SpawnPoint($green->getId(), new Vector3(0, 0, 2)),
-            new SpawnPoint($green->getId(), new Vector3(0, 0, 3)),
+            [
+                new SpawnPoint(new Vector3(1, 0, 0)),
+                new SpawnPoint(new Vector3(2, 0, 0)),
+                new SpawnPoint(new Vector3(3, 0, 0)),
+            ],
+            [
+                new SpawnPoint(new Vector3(0, 1, 0)),
+                new SpawnPoint(new Vector3(0, 2, 0)),
+                new SpawnPoint(new Vector3(0, 3, 0)),
+            ],
+            [
+                new SpawnPoint(new Vector3(0, 0, 1)),
+                new SpawnPoint(new Vector3(0, 0, 2)),
+                new SpawnPoint(new Vector3(0, 0, 3)),
+            ],
         ]);
 
         CreateMapService::execute($map);
 
+        $this->assertCount(3, \team_game_system\service\LoadMapService::findByName("map")->getSpawnPoints());
         $this->assertEquals(true, file_exists(DataFolderPath::MAP . "map.json"));
     }
 
@@ -48,7 +47,7 @@ class TestTeamGameSystem extends TestCase
             Team::asNew("Blue", new Color(0, 0, 255)),
             Team::asNew("Green", new Color(0, 255, 0)),
         ];
-        $map = TeamGameSystem::randomSelectMap($teams);
+        $map = TeamGameSystem::selectMap("map", $teams);
         $game = Game::asNew($map, $teams);
 
         TeamGameSystem::createGame($game);

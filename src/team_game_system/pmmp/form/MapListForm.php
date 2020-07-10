@@ -8,7 +8,7 @@ use form_builder\models\simple_form_elements\SimpleFormButton;
 use form_builder\models\SimpleForm;
 use pocketmine\Player;
 use team_game_system\model\Map;
-use team_game_system\service\SelectMapService;
+use team_game_system\service\LoadMapService;
 
 class MapListForm extends SimpleForm
 {
@@ -24,7 +24,7 @@ class MapListForm extends SimpleForm
                     }
                 );
             },
-            SelectMapService::all()));
+            LoadMapService::all()));
     }
 
     function onClickCloseButton(Player $player): void {

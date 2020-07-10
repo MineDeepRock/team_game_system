@@ -16,7 +16,7 @@ class Map
      */
     private $levelName;
     /**
-     * @var SpawnPoint[]
+     * @var String => SpawnPoint[]
      */
     private $spawnPoints;
 
@@ -34,7 +34,7 @@ class Map
     }
 
     /**
-     * @return SpawnPoint[]
+     * @return array
      */
     public function getSpawnPoints(): array {
         return $this->spawnPoints;

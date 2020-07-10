@@ -13,11 +13,12 @@ use team_game_system\model\Map;
 use team_game_system\model\Score;
 use team_game_system\model\TeamId;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
+use team_game_system\service\AdaptMapToTeamsService;
 use team_game_system\service\AddScoreService;
 use team_game_system\service\CreateGameService;
 use team_game_system\service\FinishGameService;
 use team_game_system\service\JoinGameService;
-use team_game_system\service\SelectMapService;
+use team_game_system\service\LoadMapService;
 use team_game_system\service\StartGameService;
 use team_game_system\store\GameStore;
 use team_game_system\store\PlayerDataStore;
@@ -45,12 +46,8 @@ class TeamGameSystem
         SetSpawnPMMPService::execute($player);
     }
 
-    static function findMapByName(string $name,array $teams): Map {
-        return SelectMapService::byName($name,$teams);
-    }
-
-    static function randomSelectMap(array $teams): Map {
-        return SelectMapService::random($teams);
+    static function selectMap(string $name, array $teams): Map {
+        return AdaptMapToTeamsService::execute(LoadMapService::findByName($name), $teams);
     }
 
     static function addScore(GameId $gameId, TeamId $teamId, Score $score): void {
