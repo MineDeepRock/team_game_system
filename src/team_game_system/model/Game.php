@@ -123,23 +123,23 @@ class Game
     }
 
     /**
-     * @return Score
+     * @return Score|null
      */
-    public function getMaxScore(): Score {
+    public function getMaxScore(): ?Score {
         return $this->maxScore;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getMaxPlayersCount(): int {
+    public function getMaxPlayersCount(): ?int {
         return $this->maxPlayersCount;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getTimeLimit(): int {
+    public function getTimeLimit(): ?int {
         return $this->timeLimit;
     }
 }

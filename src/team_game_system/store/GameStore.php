@@ -11,10 +11,10 @@ class GameStore
     /**
      * @var Game[]
      */
-    static private $games;
+    static private $games = [];
 
     static function add(Game $game): void {
-        $game[] = $game;
+        self::$games[] = $game;
     }
 
     static function delete(GameId $gameId): void {
@@ -24,10 +24,12 @@ class GameStore
         }
     }
 
-    static function findById(GameId $gameId): Game {
+    static function findById(GameId $gameId): ?Game {
         $results = array_filter(self::$games, function ($game) use ($gameId) {
             return $game->getId()->equals($gameId);
         });
+
+        if (count($results) === 0) return null;
 
         return $results[0];
     }

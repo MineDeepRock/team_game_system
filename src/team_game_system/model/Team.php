@@ -3,6 +3,7 @@
 namespace team_game_system\model;
 
 
+use form_builder\models\simple_form_elements\SimpleFormButton;
 use pocketmine\utils\Color;
 
 class Team
@@ -49,8 +50,8 @@ class Team
         return $this->id;
     }
 
-    public function add(Score $score): void {
-        $this->score += $score->getValue();
+    public function addScore(Score $score): void {
+        $this->score = new Score($this->score->getValue() + $score->getValue());
     }
 
     /**
@@ -58,5 +59,12 @@ class Team
      */
     public function setScore(Score $score): void {
         $this->score = $score;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string {
+        return $this->name;
     }
 }
