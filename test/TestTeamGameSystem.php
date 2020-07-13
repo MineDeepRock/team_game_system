@@ -11,7 +11,9 @@ use team_game_system\model\Score;
 use team_game_system\model\SpawnPoint;
 use team_game_system\model\Team;
 use team_game_system\service\CreateMapService;
+use team_game_system\service\JoinGameService;
 use team_game_system\store\GameStore;
+use team_game_system\store\PlayerDataStore;
 use team_game_system\TeamGameSystem;
 
 class TestTeamGameSystem extends TestCase
@@ -72,5 +74,13 @@ class TestTeamGameSystem extends TestCase
             if ($team->getName() === "Red") $redTeam = $team;
         }
         $this->assertEquals(100, $redTeam->getScore()->getValue());
+    }
+
+    public function testJoinGame() {
+        $game = GameStore::getAll()[0];
+        JoinGameService::execute("Steve", $game->getId(), null);
+
+        $players = PlayerDataStore::getGamePlayers($game->getId());
+        $this->assertCount(1, $players);
     }
 }
