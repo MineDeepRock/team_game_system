@@ -13,7 +13,7 @@ class PlayerDataStore
     /**
      * @var PlayerData[]
      */
-    static $playersData;
+    static $playersData = [];
 
     static function add(PlayerData $playerData): void {
         self::$playersData[] = $playerData;
