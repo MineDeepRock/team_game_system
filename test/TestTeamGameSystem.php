@@ -19,31 +19,6 @@ use team_game_system\TeamGameSystem;
 
 class TestTeamGameSystem extends TestCase
 {
-    public function testCreateMap() {
-        $map = new Map("map", "map", [
-            [
-                new SpawnPoint(new Vector3(1, 0, 0)),
-                new SpawnPoint(new Vector3(2, 0, 0)),
-                new SpawnPoint(new Vector3(3, 0, 0)),
-            ],
-            [
-                new SpawnPoint(new Vector3(0, 1, 0)),
-                new SpawnPoint(new Vector3(0, 2, 0)),
-                new SpawnPoint(new Vector3(0, 3, 0)),
-            ],
-            [
-                new SpawnPoint(new Vector3(0, 0, 1)),
-                new SpawnPoint(new Vector3(0, 0, 2)),
-                new SpawnPoint(new Vector3(0, 0, 3)),
-            ],
-        ]);
-
-        CreateMapService::execute($map);
-
-        $this->assertCount(3, MapsStore::findByName("map")->getSpawnPoints());
-        $this->assertEquals(true, file_exists(DataFolderPath::MAP . "map.json"));
-    }
-
     public function testCreateGame() {
         $teams = [
             Team::asNew("Red", new Color(255, 0, 0)),
