@@ -28,8 +28,10 @@ class MapJsonAdapter
 
     static function encode(Map $map): array {
         $spawnPointGroups = [];
-        foreach ($map->getSpawnPoints() as $index => $spawnPointGroup) {
+        $index = 0;
+        foreach ($map->getSpawnPoints() as $spawnPointGroup) {
             $spawnPointGroups[$index] = [];
+
             foreach ($spawnPointGroup as $spawnPoint) {
                 $pos = $spawnPoint->getPosition();
 
@@ -39,6 +41,7 @@ class MapJsonAdapter
                     "z" => $pos->getZ(),
                 ];
             }
+            $index++;
         }
 
         return [
