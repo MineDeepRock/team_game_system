@@ -7,7 +7,6 @@ namespace team_game_system\service;
 use team_game_system\model\GameId;
 use team_game_system\model\Score;
 use team_game_system\model\TeamId;
-use team_game_system\pmmp\service\AddScorePMMPService;
 use team_game_system\store\GameStore;
 
 class AddScoreService
@@ -19,7 +18,6 @@ class AddScoreService
         })[0];
 
         $team->addScore($score);
-        AddScorePMMPService::execute($gameId, $teamId, $score);
 
         if ($game->getMaxScore() === null) return;
         if($team->getScore()->getValue() >= $game->getMaxScore()->getValue()) {

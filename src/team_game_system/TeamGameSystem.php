@@ -12,7 +12,11 @@ use team_game_system\model\GameId;
 use team_game_system\model\Map;
 use team_game_system\model\Score;
 use team_game_system\model\TeamId;
+use team_game_system\pmmp\service\AddScorePMMPService;
+use team_game_system\pmmp\service\FinishGamePMMPService;
+use team_game_system\pmmp\service\JoinGamePMMPService;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
+use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\AdaptMapToTeamsService;
 use team_game_system\service\AddScoreService;
 use team_game_system\service\CreateGameService;
@@ -32,14 +36,26 @@ class TeamGameSystem
 
     static function startGame(TaskScheduler $scheduler, GameId $gameId): void {
         StartGameService::execute($scheduler, $gameId);
+        StartGamePMMPService::execute($gameId);
     }
 
     static function finishedGame(GameId $gameId): void {
+        $playersData = PlayerDataStore::getGamePlayers($gameId);
+        $game = GameStore::findById($gameId);
+
         FinishGameService::execute($gameId);
+        FinishGamePMMPService::execute($game, $playersData);
     }
 
     static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId = null): bool {
-        return JoinGameService::execute($player, $gameId, $teamId);
+        $result =  JoinGameService::execute($player->getName(), $gameId, $teamId);
+
+        if ($result) {
+            JoinGamePMMPService::execute($player, $gameId);
+            return true;
+        }
+
+        return false;
     }
 
     static function setSpawnPoint(Player $player): void {
@@ -52,6 +68,7 @@ class TeamGameSystem
 
     static function addScore(GameId $gameId, TeamId $teamId, Score $score): void {
         AddScoreService::execute($gameId, $teamId, $score);
+        AddScorePMMPService::execute($gameId, $teamId, $score);
     }
 
     static function getPlayerData(Player $player): PlayerData {

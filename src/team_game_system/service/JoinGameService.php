@@ -8,14 +8,12 @@ use pocketmine\Player;
 use team_game_system\data_model\PlayerData;
 use team_game_system\model\GameId;
 use team_game_system\model\TeamId;
-use team_game_system\pmmp\service\JoinGamePMMPService;
 use team_game_system\store\GameStore;
 use team_game_system\store\PlayerDataStore;
 
 class JoinGameService
 {
-    static function execute(Player $player, GameId $gameId, ?TeamId $teamId): bool {
-        $name = $player->getName();
+    static function execute(string $playerName, GameId $gameId, ?TeamId $teamId): bool {
         $game = GameStore::findById($gameId);
         if ($game->isClosed()) return false;
 
@@ -25,13 +23,11 @@ class JoinGameService
         }
 
         if ($teamId === null) {
-            $teamId = SortTeamsByPlayersService::execute($game->getTeams())[0];
-            PlayerDataStore::update(new PlayerData($name, $gameId, $teamId));
+            $teamId = SortTeamsByPlayersService::execute($game->getTeams())[0]->getId();
+            PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
         } else {
-            PlayerDataStore::update(new PlayerData($name, $gameId, $teamId));
+            PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
         }
-
-        JoinGamePMMPService::execute($player, $gameId);
 
         return true;
     }
