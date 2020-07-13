@@ -4,16 +4,15 @@
 namespace team_game_system\service;
 
 
-use team_game_system\adapter\MapJsonAdapter;
-use team_game_system\DataFolderPath;
 use team_game_system\model\Map;
+use team_game_system\store\MapsStore;
 
 class CreateMapService
 {
     static function execute(Map $map): bool {
-        if (file_exists(DataFolderPath::MAP . $map->getName() . ".json")) return false;
+        if (MapsStore::findByName($map->getName())) return false;
 
-        file_put_contents(DataFolderPath::MAP . $map->getName() . ".json", json_encode(MapJsonAdapter::encode($map)));
+        MapsStore::create($map);
         return true;
     }
 }
