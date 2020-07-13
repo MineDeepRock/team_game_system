@@ -1,14 +1,14 @@
 <?php
 
 
-namespace team_game_system\service;
+namespace team_game_system\store;
 
 
 use team_game_system\adapter\MapJsonAdapter;
 use team_game_system\DataFolderPath;
 use team_game_system\model\Map;
 
-class LoadMapService
+class MapsStore
 {
     static function findByName(string $name): Map {
         $mapsData = json_decode(file_get_contents(DataFolderPath::MAP . $name . ".json"), true);

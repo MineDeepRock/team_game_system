@@ -13,6 +13,7 @@ use team_game_system\model\Team;
 use team_game_system\service\CreateMapService;
 use team_game_system\service\JoinGameService;
 use team_game_system\store\GameStore;
+use team_game_system\store\MapsStore;
 use team_game_system\store\PlayerDataStore;
 use team_game_system\TeamGameSystem;
 
@@ -39,7 +40,7 @@ class TestTeamGameSystem extends TestCase
 
         CreateMapService::execute($map);
 
-        $this->assertCount(3, \team_game_system\service\LoadMapService::findByName("map")->getSpawnPoints());
+        $this->assertCount(3, MapsStore::findByName("map")->getSpawnPoints());
         $this->assertEquals(true, file_exists(DataFolderPath::MAP . "map.json"));
     }
 

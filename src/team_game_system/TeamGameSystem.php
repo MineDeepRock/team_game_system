@@ -22,9 +22,9 @@ use team_game_system\service\AddScoreService;
 use team_game_system\service\CreateGameService;
 use team_game_system\service\FinishGameService;
 use team_game_system\service\JoinGameService;
-use team_game_system\service\LoadMapService;
 use team_game_system\service\StartGameService;
 use team_game_system\store\GameStore;
+use team_game_system\store\MapsStore;
 use team_game_system\store\PlayerDataStore;
 
 //API層
@@ -63,7 +63,7 @@ class TeamGameSystem
     }
 
     static function selectMap(string $name, array $teams): Map {
-        return AdaptMapToTeamsService::execute(LoadMapService::findByName($name), $teams);
+        return AdaptMapToTeamsService::execute(MapsStore::findByName($name), $teams);
     }
 
     static function addScore(GameId $gameId, TeamId $teamId, Score $score): void {
