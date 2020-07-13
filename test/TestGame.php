@@ -1,23 +1,16 @@
 <?php
 
-
 use PHPUnit\Framework\TestCase;
-use pocketmine\math\Vector3;
 use pocketmine\utils\Color;
-use team_game_system\DataFolderPath;
 use team_game_system\model\Game;
-use team_game_system\model\Map;
 use team_game_system\model\Score;
-use team_game_system\model\SpawnPoint;
 use team_game_system\model\Team;
-use team_game_system\service\CreateMapService;
 use team_game_system\service\JoinGameService;
 use team_game_system\store\GameStore;
-use team_game_system\store\MapsStore;
 use team_game_system\store\PlayerDataStore;
 use team_game_system\TeamGameSystem;
 
-class TestTeamGameSystem extends TestCase
+class TestGame extends TestCase
 {
     public function testCreateGame() {
         $teams = [
