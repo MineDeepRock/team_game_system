@@ -6,7 +6,7 @@ namespace team_game_system\pmmp\event;
 use pocketmine\event\Event;
 use team_game_system\model\GameId;
 
-class StartGameEvent extends Event
+class StartedGameEvent extends Event
 {
     /**
      * @var GameId

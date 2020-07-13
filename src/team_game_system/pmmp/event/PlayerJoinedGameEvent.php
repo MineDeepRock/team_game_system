@@ -8,7 +8,7 @@ use pocketmine\event\Event;
 use pocketmine\Player;
 use team_game_system\model\GameId;
 
-class PlayerJoinGameEvent extends Event
+class PlayerJoinedGameEvent extends Event
 {
     /**
      * @var Player

@@ -13,9 +13,9 @@ use team_game_system\model\Score;
 use team_game_system\model\Team;
 use team_game_system\pmmp\event\AddedScoreEvent;
 use team_game_system\pmmp\event\FinishedGameEvent;
-use team_game_system\pmmp\event\PlayerJoinGameEvent;
+use team_game_system\pmmp\event\PlayerJoinedGameEvent;
 use team_game_system\pmmp\event\PlayerKilledPlayerEvent;
-use team_game_system\pmmp\event\StartGameEvent;
+use team_game_system\pmmp\event\StartedGameEvent;
 use team_game_system\pmmp\event\UpdatedGameTimerEvent;
 use team_game_system\store\GameStore;
 use team_game_system\TeamGameSystem;
@@ -52,7 +52,7 @@ class Example extends PluginBase implements Listener
         //ScoreBoard更新とか勝利判定
     }
 
-    public function onStartedGame(StartGameEvent $event) {
+    public function onStartedGame(StartedGameEvent $event) {
         $gameId = $event->getGameId();
         $playersData = TeamGameSystem::getGamePlayersData($gameId);
         foreach ($playersData as $playerData) {
@@ -92,7 +92,7 @@ class Example extends PluginBase implements Listener
         TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
     }
 
-    public function onJoinGame(PlayerJoinGameEvent $event) {
+    public function onJoinGame(PlayerJoinedGameEvent $event) {
         $player = $event->getPlayer();
         $gameId = $event->getGameId();
 
