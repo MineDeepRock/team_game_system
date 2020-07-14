@@ -6,6 +6,7 @@ namespace team_game_system\adapter;
 use pocketmine\math\Vector3;
 use team_game_system\model\Map;
 use team_game_system\model\SpawnPoint;
+use team_game_system\model\SpawnPointsGroup;
 
 class MapJsonAdapter
 {
@@ -14,28 +15,30 @@ class MapJsonAdapter
      * @return Map
      */
     static function decode(array $json): Map {
-        $spawnPoints = [];
+        $newSpawnPointsGroups = [];
 
         foreach ($json["spawn_point_groups"] as $index => $spawnPointGroup) {
-            $spawnPoints[$index] = [];
+            $newSpawnPoints = [];
             foreach ($spawnPointGroup as $spawnPoint) {
-                $spawnPoints[$index][] = new SpawnPoint(new Vector3($spawnPoint["x"], $spawnPoint["y"], $spawnPoint["z"]));
+                $newSpawnPoints[] = new SpawnPoint(new Vector3($spawnPoint["x"], $spawnPoint["y"], $spawnPoint["z"]));
             }
+
+            $newSpawnPointsGroups[$index] = new SpawnPointsGroup($newSpawnPoints);
         }
 
-        return new Map($json["name"], $json["level_name"], $spawnPoints);
+        return new Map($json["name"], $json["level_name"], $newSpawnPointsGroups);
     }
 
     static function encode(Map $map): array {
-        $spawnPointGroups = [];
+        $spawnPointGroupsAsJson = [];
         $index = 0;
-        foreach ($map->getSpawnPoints() as $spawnPointGroup) {
-            $spawnPointGroups[$index] = [];
+        foreach ($map->getSpawnPointGroups() as $spawnPointGroup) {
+            $spawnPointGroupsAsJson[$index] = [];
 
-            foreach ($spawnPointGroup as $spawnPoint) {
+            foreach ($spawnPointGroup->getSpawnPoints() as $spawnPoint) {
                 $pos = $spawnPoint->getPosition();
 
-                $spawnPointGroups[$index][] = [
+                $spawnPointGroupsAsJson[$index][] = [
                     "x" => $pos->getX(),
                     "y" => $pos->getY(),
                     "z" => $pos->getZ(),
@@ -47,7 +50,7 @@ class MapJsonAdapter
         return [
             "name" => $map->getName(),
             "level_name" => $map->getLevelName(),
-            "spawn_point_groups" => $spawnPointGroups
+            "spawn_point_groups" => $spawnPointGroupsAsJson
         ];
     }
 }
