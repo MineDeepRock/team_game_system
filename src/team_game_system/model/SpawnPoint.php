@@ -23,4 +23,8 @@ class SpawnPoint
     public function getPosition(): Vector3 {
         return $this->position;
     }
+
+    public function equals(SpawnPoint $spawnPoint): bool {
+        return $this->position->equals($spawnPoint->getPosition());
+    }
 }
