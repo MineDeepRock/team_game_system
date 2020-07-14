@@ -8,6 +8,7 @@ use team_game_system\model\Map;
 use team_game_system\model\SpawnPoint;
 use team_game_system\service\AddSpawnPointService;
 use team_game_system\service\CreateMapService;
+use team_game_system\service\RemoveSpawnPointService;
 use team_game_system\store\MapsStore;
 
 class TestMapServices extends TestCase
@@ -42,5 +43,12 @@ class TestMapServices extends TestCase
         AddSpawnPointService::execute($map, 0, new SpawnPoint(new Vector3(4, 0, 0)));
 
         $this->assertCount(4, MapsStore::findByName("map")->getSpawnPoints()[0]);
+    }
+
+    public function testRemoveSpawnPoint() {
+        $map = MapsStore::findByName("map");
+        RemoveSpawnPointService::execute($map, 0, new SpawnPoint(new Vector3(4, 0, 0)));
+
+        $this->assertCount(3, MapsStore::findByName("map")->getSpawnPoints()[0]);
     }
 }
