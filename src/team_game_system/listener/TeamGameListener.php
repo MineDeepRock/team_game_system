@@ -6,12 +6,29 @@ namespace team_game_system\listener;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\Player;
+use team_game_system\data_model\PlayerData;
 use team_game_system\pmmp\event\PlayerKilledPlayerEvent;
+use team_game_system\pmmp\service\QuitGamePMMPService;
+use team_game_system\service\QuitGameService;
 use team_game_system\store\PlayerDataStore;
 
 class TeamGameListener implements Listener
 {
+    public function onJoin(PlayerJoinEvent $event) {
+        $player = $event->getPlayer();
+        PlayerDataStore::add(new PlayerData($player->getName(), null, null));
+    }
+
+    public function onQuit(PlayerQuitEvent $event) {
+        $player = $event->getPlayer();
+        $playerData = PlayerDataStore::findByName($player->getName());
+        QuitGameService::execute($player->getName());
+        QuitGamePMMPService::execute($player, $playerData->getGameId(), $playerData->getTeamId());
+    }
+
     public function onPlayerAttackPlayer(EntityDamageByEntityEvent $event): void {
         $attacker = $event->getDamager();
         $target = $event->getEntity();
