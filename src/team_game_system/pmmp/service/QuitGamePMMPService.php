@@ -11,7 +11,7 @@ use team_game_system\pmmp\event\PlayerQuitGameEvent;
 
 class QuitGamePMMPService
 {
-    static function execute(Player $player, GameId $gameId, TeamId $teamId) {
+    static function execute(Player $player, ?GameId $gameId, ?TeamId $teamId) {
         $event = new PlayerQuitGameEvent($player, $gameId, $teamId);
         $event->call();
     }

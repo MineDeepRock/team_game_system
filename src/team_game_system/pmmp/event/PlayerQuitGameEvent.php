@@ -16,15 +16,15 @@ class PlayerQuitGameEvent extends Event
      */
     private $player;
     /**
-     * @var GameId
+     * @var GameId|null
      */
     private $gameId;
     /**
-     * @var TeamId
+     * @var TeamId|null
      */
     private $teamId;
 
-    public function __construct(Player $player, GameId $gameId,TeamId $teamId) {
+    public function __construct(Player $player, ?GameId $gameId,?TeamId $teamId) {
         $this->player = $player;
         $this->gameId = $gameId;
         $this->teamId = $teamId;
@@ -38,16 +38,16 @@ class PlayerQuitGameEvent extends Event
     }
 
     /**
-     * @return GameId
+     * @return GameId|null
      */
-    public function getGameId(): GameId {
+    public function getGameId(): ?GameId {
         return $this->gameId;
     }
 
     /**
-     * @return TeamId
+     * @return TeamId|null
      */
-    public function getTeamId(): TeamId {
+    public function getTeamId(): ?TeamId {
         return $this->teamId;
     }
 }
