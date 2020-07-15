@@ -17,7 +17,6 @@ use team_game_system\pmmp\event\PlayerJoinedGameEvent;
 use team_game_system\pmmp\event\PlayerKilledPlayerEvent;
 use team_game_system\pmmp\event\StartedGameEvent;
 use team_game_system\pmmp\event\UpdatedGameTimerEvent;
-use team_game_system\store\GameStore;
 use team_game_system\TeamGameSystem;
 
 class Example extends PluginBase implements Listener
@@ -83,7 +82,7 @@ class Example extends PluginBase implements Listener
 
     public function joinGame(Player $player) {
         //人数が一番少ないチーム
-        $games = GameStore::getAll();
+        $games = TeamGameSystem::getAllGames();
         $game = $games[array_rand($games)];
         TeamGameSystem::joinGame($player, $game->getId());
 

@@ -30,6 +30,7 @@ use team_game_system\store\PlayerDataStore;
 //API層
 class TeamGameSystem
 {
+    //Game
     static function createGame(Game $game): void {
         CreateGameService::execute($game);
     }
@@ -71,6 +72,7 @@ class TeamGameSystem
         AddScorePMMPService::execute($gameId, $teamId, $score);
     }
 
+    //PlayerData
     static function getPlayerData(Player $player): PlayerData {
         return PlayerDataStore::findByName($player->getName());
     }
@@ -83,6 +85,10 @@ class TeamGameSystem
         return PlayerDataStore::getTeamPlayers($teamId);
     }
 
+    //Game
+    static function getAllGames(): array {
+        return GameStore::getAll();
+    }
     static function getGame(GameId $gameId): ?Game {
         return GameStore::findById($gameId);
     }
