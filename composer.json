@@ -45,6 +45,11 @@
       "type": "git",
       "name": "suinua/form_builder",
       "url": "https://github.com/MineDeepRock/form_builder"
+    },
+    {
+      "type": "git",
+      "name": "suinua/slot_menu_system",
+      "url": "https://github.com/MineDeepRock/slot_menu_system"
     }
   ],
   "require": {
@@ -56,7 +61,8 @@
     "pocketmine/math": "^0.2.0",
     "pocketmine/snooze": "^0.1.0",
     "ext-json": "*",
-    "suinua/form_builder": "dev-master"
+    "suinua/form_builder": "dev-master",
+    "suinua/slot_menu_system": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5"
