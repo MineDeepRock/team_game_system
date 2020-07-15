@@ -98,3 +98,12 @@ TeamGameSystem::setSpawnPoint($player);
 
 ### UpdatedGameTimerEvent
 ゲームの経過時間が更新されたときに呼び出されます
+
+## Q&A
+
+#### Q.チームデスマッチとフラッグとか２つ以上別種類のゲームを作る時、どうやって実装すればいいの❓
+A.TeamDeathMatchGameIdsみたいな名前の配列を作って、チームデスマッチのゲームIDを保存。  
+その配列にIDが入っていたら～みたいな感じで処理する。  
+(柔軟性がかけるため、こういうことをこちら(TeamGameSystem)は負担しません)
+
+[Example(あとでかく)]()
