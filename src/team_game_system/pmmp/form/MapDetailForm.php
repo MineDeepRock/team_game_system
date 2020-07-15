@@ -21,15 +21,17 @@ class MapDetailForm extends SimpleForm
                 }
             ),
             new SimpleFormButton(
-                "スポーン地点の設定",
+                "スポーン地点",
                 null,
                 function (Player $player) use ($map) {
+                    $player->sendForm(new SpawnPointsGroupsForm($map));
                 }
             ),
             new SimpleFormButton(
-                "削除",
+                "マップを削除",
                 null,
                 function (Player $player) use ($map) {
+                    //TODO: 確認フォーム
                 }
             ),
         ]);

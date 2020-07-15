@@ -11,16 +11,16 @@ use slot_menu_system\models\SlotMenuElement;
 use team_game_system\model\Map;
 use team_game_system\model\SpawnPoint;
 use team_game_system\pmmp\form\SpawnPointsGroupDetailForm;
-use team_game_system\service\RemoveSpawnPointService;
+use team_game_system\service\AddSpawnPointService;
 use team_game_system\store\MapsStore;
 
-class SpawnPointSlotMenu extends SlotMenu
+class AddSpawnPointSlotMenu extends SlotMenu
 {
     public function __construct(Map $map, int $groupIndex, SpawnPoint $spawnPoint) {
         parent::__construct([
-            new SlotMenuElement(ItemIds::TNT, "削除", 0, function (Player $player) use ($map, $groupIndex, $spawnPoint) {
+            new SlotMenuElement(ItemIds::EMERALD, "追加", 0, function (Player $player) use ($map, $groupIndex, $spawnPoint) {
                 $player->getInventory()->setContents([]);
-                RemoveSpawnPointService::execute($map, $groupIndex, $spawnPoint);
+                AddSpawnPointService::execute($map, $groupIndex, $spawnPoint);
                 $updatedMap = MapsStore::findByName($map->getName());
                 $player->sendForm(new SpawnPointsGroupDetailForm($updatedMap, $groupIndex, $updatedMap->getSpawnPointGroups()[$groupIndex]));
             }),
