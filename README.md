@@ -10,26 +10,91 @@
 
 # 使い方
 
+## マップの設定
+コマンド`/map`で出てくるフォームで操作します。  
+
+- map name  
+識別に使われます。同じ名前は使用不可能です。
+
+- map level name  
+フォームを出したプレイヤーのLevelがマップのLevelになります。  
+
+- spawn points group  
+マップの`スポーン地点グループ`はチームのスポーン地点はと一致します。  
+(スポーン地点グループはランダムで割り当てられる)  
+
 ## API
 
+[Example](https://github.com/MineDeepRock/team_game_system/blob/master/example/Example.php)
+
 ### ゲームを作成
+```php
+use pocketmine\utils\Color;
+use team_game_system\model\Game;
+use team_game_system\model\Team;
+use team_game_system\TeamGameSystem;
+
+$teams = [
+    Team::asNew("Red", new Color(255, 0, 0)),
+    Team::asNew("Blue", new Color(0, 0, 255)),
+    Team::asNew("Green", new Color(0, 255, 0)),
+];
+$map = TeamGameSystem::selectMap("map", $teams);
+$game = Game::asNew($map, $teams);
+
+TeamGameSystem::createGame($game);
+```
 
 ### ゲームに参加させる
+```php
+use team_game_system\TeamGameSystem;
+$player = null;
+
+//人数が一番少ないチームに参加
+$games = TeamGameSystem::getAllGames();
+$game = $games[array_rand($games)];
+TeamGameSystem::joinGame($player, $game->getId());
+
+//指定のチームに参加
+$team = $game->getTeams()[array_rand($game->getTeams())];
+TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
+```
 
 ### スコアを追加
+```php
+use team_game_system\model\Score;
+use team_game_system\TeamGameSystem;
 
-### スポーン地点を設定
+$player = null;
+$playerData = TeamGameSystem::getPlayerData($player);
+TeamGameSystem::addScore($playerData->getGameId(), $playerData->getTeamId(), new Score(10)); 
+```
+
+### ランダムでスポーン地点をセット
+```php
+use team_game_system\TeamGameSystem;
+
+$player = null;
+TeamGameSystem::setSpawnPoint($player);
+```
 
 ## イベント一覧
+[Example](https://github.com/MineDeepRock/team_game_system/blob/master/example/Example.php)
 
 ### PlayerJoinedGameEvent
+プレイヤーがゲームに参加したときに呼び出されます
 
 ### PlayerKilledPlayerEvent
+プレイヤーが相手に倒されたときに呼び出されます
 
 ### AddedScoreEvent
+スコアが追加されたときに呼び出されます
 
 ### PlayerQuitGameEvent
+プレイヤーがゲームから抜けたときに呼び出されます
 
 ### StartedGameEvent
+ゲームが開始されたときに呼び出されます
 
 ### UpdatedGameTimerEvent
+ゲームの経過時間が更新されたときに呼び出されます
