@@ -19,6 +19,10 @@ class PlayerDataStore
         self::$playersData[] = $playerData;
     }
 
+    static function getAll(): array {
+        return self::$playersData;
+    }
+
     static function findByName(string $name): ?PlayerData {
         foreach (self::$playersData as $playerData) {
             if($playerData->getName() === $name) {
@@ -32,6 +36,7 @@ class PlayerDataStore
     static function getGamePlayers(GameId $gameId): array {
         $result = [];
         foreach (self::$playersData as $playerData) {
+            if ($playerData->getGameId() === null) continue;
             if($playerData->getGameId()->equals($gameId)) {
                 $result[] = $playerData;
             }
@@ -44,6 +49,7 @@ class PlayerDataStore
     static function getTeamPlayers(TeamId $teamId): array {
         $result = [];
         foreach (self::$playersData as $playerData) {
+            if ($playerData->getTeamId() === null) continue;
             if($playerData->getTeamId()->equals($teamId)) {
                 $result[] = $playerData;
             }
@@ -53,8 +59,8 @@ class PlayerDataStore
     }
 
     static function remove(string $name): void {
-        foreach (self::$playersData as $playerData) {
-            if ($playerData->getName() === $name) unset($playerData);
+        foreach (self::$playersData as $index => $playerData) {
+            if ($playerData->getName() === $name) unset(self::$playersData[$index]);
         }
     }
 
