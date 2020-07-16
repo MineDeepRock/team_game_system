@@ -7,8 +7,10 @@ use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\scheduler\TaskScheduler;
 use team_game_system\pmmp\event\UpdatedGameTimerEvent;
+use team_game_system\pmmp\service\FinishGamePMMPService;
 use team_game_system\service\FinishGameService;
 use team_game_system\store\GameStore;
+use team_game_system\store\PlayerDataStore;
 
 class Game
 {
@@ -97,8 +99,13 @@ class Game
             $this->elapsedTime += 1;
             $event = new UpdatedGameTimerEvent($this->id, $this->timeLimit, $this->elapsedTime);
             $event->call();
-            if ($this->timeLimit <= $this->elapsedTime) {
-                FinishGameService::execute($this->id);
+
+            if ($this->timeLimit !== null) {
+                if ($this->timeLimit <= $this->elapsedTime) {
+                    $playersData = PlayerDataStore::getGamePlayers($this->id);
+                    FinishGameService::execute($this->id);
+                    FinishGamePMMPService::execute($this, $playersData);
+                }
             }
         }), 20, 20);
     }
