@@ -107,3 +107,23 @@ A.TeamDeathMatchGameIdsみたいな名前の配列を作って、チームデス
 (柔軟性がかけるため、こういうことをこちら(TeamGameSystem)は負担しません)
 
 [Example(あとでかく)]()
+
+
+# 依存関係
+[form_builder](https://github.com/MineDeepRock/form_builder)  
+[slot_menu_system](https://github.com/MineDeepRock/slot_menu_system)  
+↑２つを導入してください
+
+## Composerで補完する
+repositoriesに以下を追加
+```json
+{
+  "type": "git",
+  "name": "suinua/team_game_system",
+  "url": "https://github.com/MineDeepRock/team_game_system"
+}
+```
+requireに以下を追加
+```json
+"suinua/team_game_system-mp": "dev-master",
+```
