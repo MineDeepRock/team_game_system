@@ -51,5 +51,7 @@ class TestGame extends TestCase
 
         $players = PlayerDataStore::getGamePlayers($game->getId());
         $this->assertCount(1, $players);
+
+        $this->assertNotNull(PlayerDataStore::findByName("Steve")->getGameId());
     }
 }
