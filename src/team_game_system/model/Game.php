@@ -142,4 +142,11 @@ class Game
     public function getTimeLimit(): ?int {
         return $this->timeLimit;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getElapsedTime(): ?int {
+        return $this->elapsedTime;
+    }
 }
