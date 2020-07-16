@@ -8,6 +8,11 @@
 - 人数制限
 - Minecraft内でのマップ作成とスポーン地点設定、その他マップ管理
 
+# サンプル
+
+[チームデスマッチ](https://github.com/suinua/example_team_death_match)
+
+
 # 使い方
 
 ## マップの設定
@@ -24,8 +29,6 @@
 (スポーン地点グループはランダムで割り当てられる)  
 
 ## API
-
-[Example](https://github.com/MineDeepRock/team_game_system/blob/master/example/Example.php)
 
 ### ゲームを作成
 ```php
@@ -65,7 +68,6 @@ TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
 use team_game_system\model\Score;
 use team_game_system\TeamGameSystem;
 
-$player = null;
 $playerData = TeamGameSystem::getPlayerData($player);
 TeamGameSystem::addScore($playerData->getGameId(), $playerData->getTeamId(), new Score(10)); 
 ```
@@ -74,13 +76,10 @@ TeamGameSystem::addScore($playerData->getGameId(), $playerData->getTeamId(), new
 ```php
 use team_game_system\TeamGameSystem;
 
-$player = null;
 TeamGameSystem::setSpawnPoint($player);
 ```
 
 ## イベント一覧
-[Example](https://github.com/MineDeepRock/team_game_system/blob/master/example/Example.php)
-
 ### PlayerJoinedGameEvent
 プレイヤーがゲームに参加したときに呼び出されます
 
