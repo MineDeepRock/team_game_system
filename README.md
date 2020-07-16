@@ -114,7 +114,7 @@ A.TeamDeathMatchGameIdsみたいな名前の配列を作って、チームデス
 [slot_menu_system](https://github.com/MineDeepRock/slot_menu_system)  
 ↑２つを導入してください
 
-## Composerで補完する
+# Composerで補完する
 repositoriesに以下を追加
 ```json
 {
