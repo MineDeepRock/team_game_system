@@ -53,10 +53,9 @@ class TeamGameSystem
 
         if ($result) {
             JoinGamePMMPService::execute($player, $gameId);
-            return true;
         }
 
-        return false;
+        return $result;
     }
 
     static function setSpawnPoint(Player $player): void {
