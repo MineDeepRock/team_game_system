@@ -23,7 +23,7 @@ class JoinGameService
         }
 
         if ($teamId === null) {
-            $teamId = SortTeamsByPlayersService::execute($game->getTeams())[0]->getId();
+            $teamId = SortTeamsByPlayersCountService::execute($game->getTeams())[0]->getId();
             PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
         } else {
             PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
