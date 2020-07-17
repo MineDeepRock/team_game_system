@@ -15,14 +15,18 @@ class AddScoreService
 {
     static function execute(GameId $gameId, TeamId $teamId, Score $score): void {
         $game = GameStore::findById($gameId);
-        $team = array_filter($game->getTeams(), function ($team) use ($teamId) {
-            return $team->getId()->equals($teamId);
-        })[0];
+        $targetTeam = null;
 
-        $team->addScore($score);
+        foreach ($game->getTeams() as $team) {
+            if($team->getId()->equals($teamId)){
+                $targetTeam = $team;
+            }
+        }
+
+        $targetTeam->addScore($score);
 
         if ($game->getMaxScore() === null) return;
-        if($team->getScore()->getValue() >= $game->getMaxScore()->getValue()) {
+        if($targetTeam->getScore()->getValue() >= $game->getMaxScore()->getValue()) {
             $playersData = PlayerDataStore::getGamePlayers($gameId);
             $game = GameStore::findById($gameId);
 
