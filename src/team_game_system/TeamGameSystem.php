@@ -19,7 +19,7 @@ use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\AdaptMapToTeamsService;
 use team_game_system\service\AddScoreService;
-use team_game_system\service\CreateGameService;
+use team_game_system\service\RegisterGameService;
 use team_game_system\service\FinishGameService;
 use team_game_system\service\JoinGameService;
 use team_game_system\service\StartGameService;
@@ -31,8 +31,8 @@ use team_game_system\store\PlayerDataStore;
 class TeamGameSystem
 {
     //Game
-    static function createGame(Game $game): void {
-        CreateGameService::execute($game);
+    static function registerGame(Game $game): void {
+        RegisterGameService::execute($game);
     }
 
     static function startGame(TaskScheduler $scheduler, GameId $gameId): void {

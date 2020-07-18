@@ -45,7 +45,7 @@ $teams = [
 $map = TeamGameSystem::selectMap("map", $teams);
 $game = Game::asNew($map, $teams);
 
-TeamGameSystem::createGame($game);
+TeamGameSystem::registerGame($game);
 ```
 
 ### ゲームに参加させる

@@ -21,7 +21,7 @@ class TestGame extends TestCase
         $map = TeamGameSystem::selectMap("map", $teams);
         $game = Game::asNew($map, $teams);
 
-        TeamGameSystem::createGame($game);
+        TeamGameSystem::registerGame($game);
 
         $this->assertNotNull(GameStore::findById($game->getId()));
     }
