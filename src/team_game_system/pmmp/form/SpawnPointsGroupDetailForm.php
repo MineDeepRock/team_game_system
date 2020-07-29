@@ -48,7 +48,7 @@ class SpawnPointsGroupDetailForm extends SimpleForm
             "グループを削除",
             null,
             function (Player $player) use ($map, $groupIndex) {
-                //TODO:確認フォーム
+                $player->sendForm(new MapRemoveSpawnPointsGroupForm($map, $groupIndex));
             }
         );
 
