@@ -1,6 +1,6 @@
 <?php
 
-namespace team_game_system\listener;
+namespace team_game_system\pmmp\listener;
 
 
 use pocketmine\event\entity\EntityDamageByEntityEvent;
