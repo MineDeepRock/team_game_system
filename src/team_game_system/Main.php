@@ -4,8 +4,8 @@ namespace team_game_system;
 
 
 use pocketmine\plugin\PluginBase;
-use team_game_system\listener\TeamGameListener;
 use team_game_system\pmmp\command\MapCommand;
+use team_game_system\pmmp\listener\TeamGameListener;
 
 class Main extends PluginBase
 {
