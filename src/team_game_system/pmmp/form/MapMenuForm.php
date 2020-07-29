@@ -26,7 +26,5 @@ class MapMenuForm extends SimpleForm
         ]);
     }
 
-    function onClickCloseButton(Player $player): void {
-        // TODO: Implement onClickCloseButton() method.
-    }
+    function onClickCloseButton(Player $player): void {}
 }

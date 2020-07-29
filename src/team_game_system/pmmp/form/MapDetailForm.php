@@ -38,6 +38,6 @@ class MapDetailForm extends SimpleForm
     }
 
     function onClickCloseButton(Player $player): void {
-        // TODO: Implement onClickCloseButton() method.
+        $player->sendForm(new MapListForm());
     }
 }

@@ -13,8 +13,10 @@ use team_game_system\store\MapsStore;
 
 class SpawnPointsGroupsForm extends SimpleForm
 {
-    public function __construct(Map $map) {
+    private $map;
 
+    public function __construct(Map $map) {
+        $this->map = $map;
         $buttons = [
             new SimpleFormButton(
                 "グループを追加",
@@ -40,6 +42,6 @@ class SpawnPointsGroupsForm extends SimpleForm
     }
 
     function onClickCloseButton(Player $player): void {
-        // TODO: Implement onClickCloseButton() method.
+        $player->sendForm(new MapDetailForm($this->map));
     }
 }
