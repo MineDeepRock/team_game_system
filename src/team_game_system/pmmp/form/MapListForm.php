@@ -27,7 +27,5 @@ class MapListForm extends SimpleForm
             MapsStore::all()));
     }
 
-    function onClickCloseButton(Player $player): void {
-        // TODO: Implement onClickCloseButton() method.
-    }
+    function onClickCloseButton(Player $player): void {}
 }
