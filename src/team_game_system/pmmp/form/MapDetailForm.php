@@ -31,7 +31,7 @@ class MapDetailForm extends SimpleForm
                 "マップを削除",
                 null,
                 function (Player $player) use ($map) {
-                    //TODO: 確認フォーム
+                    $player->sendForm(new MapRemoveForm($map));
                 }
             ),
         ]);
