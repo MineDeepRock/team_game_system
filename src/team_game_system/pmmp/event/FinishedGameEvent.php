@@ -7,6 +7,7 @@ namespace team_game_system\pmmp\event;
 use pocketmine\event\Event;
 use team_game_system\data_model\PlayerData;
 use team_game_system\model\Game;
+use team_game_system\model\Team;
 
 class FinishedGameEvent extends Event
 {
@@ -19,9 +20,15 @@ class FinishedGameEvent extends Event
      */
     private $playersData;
 
-    public function __construct(Game $game, array $playersData) {
+    /**
+     * @var Team|null
+     */
+    private $wonTeam;
+
+    public function __construct(Game $game, array $playersData, ?Team $wonTeam) {
         $this->game = $game;
         $this->playersData = $playersData;
+        $this->wonTeam = $wonTeam;
     }
 
     /**
@@ -36,5 +43,13 @@ class FinishedGameEvent extends Event
      */
     public function getPlayersData(): array {
         return $this->playersData;
+    }
+
+    /**
+     * 引き分けのときはnull
+     * @return Team|null
+     */
+    public function getWonTeam(): ?Team {
+        return $this->wonTeam;
     }
 }

@@ -6,11 +6,23 @@ namespace team_game_system\pmmp\service;
 
 use team_game_system\model\Game;
 use team_game_system\pmmp\event\FinishedGameEvent;
+use team_game_system\service\SortTeamsByScoreService;
 
 class FinishGamePMMPService
 {
     static function execute(Game $game, array $playersData): void {
-        $event = new FinishedGameEvent($game, $playersData);
+        $teamsSortedByScore = SortTeamsByScoreService::execute($game->getTeams());
+        if (count($teamsSortedByScore) >= 2) {
+            if ($teamsSortedByScore[0]->getScore()->getValue() === $teamsSortedByScore[0]->getScore()->getValue()) {
+                //勝利判定などはユーザーに任せる
+                $event = new FinishedGameEvent($game, $playersData, null);
+                $event->call();
+                return;
+            }
+        }
+
+
+        $event = new FinishedGameEvent($game, $playersData, $teamsSortedByScore[0]);
         $event->call();
     }
 }
