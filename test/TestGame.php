@@ -5,7 +5,9 @@ use pocketmine\utils\Color;
 use team_game_system\model\Game;
 use team_game_system\model\Score;
 use team_game_system\model\Team;
+use team_game_system\model\TeamId;
 use team_game_system\service\JoinGameService;
+use team_game_system\service\SortTeamsByScoreService;
 use team_game_system\store\GameStore;
 use team_game_system\store\PlayerDataStore;
 use team_game_system\TeamGameSystem;
@@ -53,5 +55,17 @@ class TestGame extends TestCase
         $this->assertCount(1, $players);
 
         $this->assertNotNull(PlayerDataStore::findByName("Steve")->getGameId());
+    }
+
+    public function testSortTeamsByScoreService() {
+        $teams = [
+            new Team(TeamId::asNew(), "a", new Color(0, 0, 0), new Score(3)),
+            new Team(TeamId::asNew(), "b", new Color(0, 0, 0), new Score(2)),
+            new Team(TeamId::asNew(), "c", new Color(0, 0, 0), new Score(3)),
+            new Team(TeamId::asNew(), "d", new Color(0, 0, 0), new Score(6)),
+        ];
+        $sortedList = SortTeamsByScoreService::execute($teams);
+
+        $this->assertEquals("d", $sortedList[0]->getName());
     }
 }
