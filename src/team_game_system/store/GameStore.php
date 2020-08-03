@@ -25,13 +25,14 @@ class GameStore
     }
 
     static function findById(GameId $gameId): ?Game {
-        $results = array_filter(self::$games, function ($game) use ($gameId) {
-            return $game->getId()->equals($gameId);
-        });
 
-        if (count($results) === 0) return null;
+        foreach (self::$games as $game) {
+            if ($game->getId()->equals($gameId)) {
+                return $game;
+            }
+        }
 
-        return $results[0];
+        return null;
     }
 
     /**
