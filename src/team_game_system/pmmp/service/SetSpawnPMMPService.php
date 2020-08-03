@@ -25,8 +25,9 @@ class SetSpawnPMMPService
         }
 
         $pos = $spawnPoints[mt_rand(0, count($spawnPoints) - 1)]->getPosition();
-        $levelPos = new Position($pos->getX(), $pos->getY(), $pos->getZ(), Server::getInstance()->getLevelByName($map->getLevelName()));
+        $level = Server::getInstance()->getLevelByName($map->getLevelName());
+        $position = new Position($pos->getX(), $pos->getY(), $pos->getZ(), $level);
 
-        $player->setSpawn($levelPos);
+        $player->setSpawn($position);
     }
 }
