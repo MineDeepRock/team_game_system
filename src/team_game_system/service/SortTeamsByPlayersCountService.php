@@ -7,6 +7,7 @@ namespace team_game_system\service;
 use team_game_system\model\Team;
 use team_game_system\store\PlayerDataStore;
 
+//小さい順
 class SortTeamsByPlayersCountService
 {
     static function execute(array $teams): array {
