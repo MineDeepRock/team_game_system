@@ -14,11 +14,13 @@ class AddScorePMMPService
 {
     static function execute(GameId $gameId, TeamId $teamId, Score $score): void {
         $game = GameStore::findById($gameId);
-        $team = array_filter($game->getTeams(), function ($team) use ($teamId) {
-            return $team->getId()->equals($teamId);
-        })[0];
+        $targetTeam = null;
 
-        $event = new AddedScoreEvent($gameId, $teamId, $team->getScore(), $score);
+        foreach ($game->getTeams() as $team) {
+            $targetTeam = $team;
+        }
+
+        $event = new AddedScoreEvent($gameId, $teamId, $targetTeam->getScore(), $score);
         $event->call();
     }
 }
