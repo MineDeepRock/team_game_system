@@ -13,8 +13,7 @@ class FinishGamePMMPService
     static function execute(Game $game, array $playersData): void {
         $teamsSortedByScore = SortTeamsByScoreService::execute($game->getTeams());
         if (count($teamsSortedByScore) >= 2) {
-            if ($teamsSortedByScore[0]->getScore()->getValue() === $teamsSortedByScore[0]->getScore()->getValue()) {
-                //勝利判定などはユーザーに任せる
+            if ($teamsSortedByScore[0]->getScore()->getValue() === $teamsSortedByScore[1]->getScore()->getValue()) {
                 $event = new FinishedGameEvent($game, $playersData, null);
                 $event->call();
                 return;
