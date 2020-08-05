@@ -17,7 +17,9 @@ class AddScorePMMPService
         $targetTeam = null;
 
         foreach ($game->getTeams() as $team) {
-            $targetTeam = $team;
+            if ($team->getId()->equals($teamId)) {
+                $targetTeam = $team;
+            }
         }
 
         $event = new AddedScoreEvent($gameId, $teamId, $targetTeam->getScore(), $score);
