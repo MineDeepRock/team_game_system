@@ -53,16 +53,16 @@
     }
   ],
   "require": {
-    "pocketmine/pocketmine-mp": "*",
-    "pocketmine/raklib": "^0.12.0",
-    "pocketmine/spl": "^0.3.0",
-    "pocketmine/binaryutils": "^0.1.0",
-    "pocketmine/nbt": "^0.2.1",
-    "pocketmine/math": "^0.2.0",
-    "pocketmine/snooze": "^0.1.0",
-    "ext-json": "*",
+    "pocketmine/pocketmine-mp": "3.14.2",
+    "pocketmine/raklib": "*",
+    "pocketmine/spl": "*",
+    "pocketmine/binaryutils": "*",
+    "pocketmine/nbt": "*",
+    "pocketmine/math": "*",
+    "pocketmine/snooze": "*",
     "suinua/form_builder": "dev-master",
-    "suinua/slot_menu_system": "dev-master"
+    "suinua/slot_menu_system": "dev-master",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5"
