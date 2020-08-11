@@ -62,6 +62,8 @@ class PlayerDataStore
         foreach (self::$playersData as $index => $playerData) {
             if ($playerData->getName() === $name) unset(self::$playersData[$index]);
         }
+
+        self::$playersData = array_values(self::$playersData);
     }
 
     static function update(PlayerData $playerData): void {

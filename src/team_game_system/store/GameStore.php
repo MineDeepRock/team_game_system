@@ -22,6 +22,8 @@ class GameStore
         foreach (self::$games as $game) {
             if($game->getId()->equals($gameId)) unset($game);
         }
+
+        self::$games[] = array_values(self::$games);
     }
 
     static function findById(GameId $gameId): ?Game {
