@@ -32,15 +32,14 @@
 
 ### ゲームを作成
 ```php
-use pocketmine\utils\Color;
-use team_game_system\model\Game;
+use pocketmine\utils\TextFormat;use team_game_system\model\Game;
 use team_game_system\model\Team;
 use team_game_system\TeamGameSystem;
 
 $teams = [
-    Team::asNew("Red", new Color(255, 0, 0)),
-    Team::asNew("Blue", new Color(0, 0, 255)),
-    Team::asNew("Green", new Color(0, 255, 0)),
+    Team::asNew("Red", TextFormat::RED),
+    Team::asNew("Blue", TextFormat::BLUE),
+    Team::asNew("Green", TextFormat::GREEN),
 ];
 $map = TeamGameSystem::selectMap("map", $teams);
 $game = Game::asNew($map, $teams);

@@ -5,6 +5,7 @@ namespace team_game_system\model;
 
 use form_builder\models\simple_form_elements\SimpleFormButton;
 use pocketmine\utils\Color;
+use pocketmine\utils\TextFormat;
 
 class Team
 {
@@ -17,23 +18,23 @@ class Team
      */
     private $name;
     /**
-     * @var Color
+     * @var string
      */
-    private $teamColor;
+    private $teamColorFormat;
     /**
      * @var Score
      */
     private $score;
 
-    public function __construct(TeamId $id, string $name, Color $teamColor, Score $score) {
+    public function __construct(TeamId $id, string $name, string $teamColorFormat, Score $score) {
         $this->id = $id;
         $this->name = $name;
-        $this->teamColor = $teamColor;
+        $this->teamColorFormat = $teamColorFormat;
         $this->score = $score;
     }
 
-    static function asNew(string $name, Color $teamColor): Team {
-        return new Team(TeamId::asNew(), $name, $teamColor, Score::asNew());
+    static function asNew(string $name, string $teamColorFormat): Team {
+        return new Team(TeamId::asNew(), $name, $teamColorFormat, Score::asNew());
     }
 
     /**
@@ -66,5 +67,12 @@ class Team
      */
     public function getName(): string {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTeamColorFormat(): string {
+        return $this->teamColorFormat;
     }
 }

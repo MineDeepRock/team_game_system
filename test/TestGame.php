@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use pocketmine\utils\Color;
+use pocketmine\utils\TextFormat;
 use team_game_system\model\Game;
 use team_game_system\model\Score;
 use team_game_system\model\Team;
@@ -16,9 +16,9 @@ class TestGame extends TestCase
 {
     public function testCreateGame() {
         $teams = [
-            Team::asNew("Red", new Color(255, 0, 0)),
-            Team::asNew("Blue", new Color(0, 0, 255)),
-            Team::asNew("Green", new Color(0, 255, 0)),
+            Team::asNew("Red", TextFormat::RED),
+            Team::asNew("Blue", TextFormat::BLUE),
+            Team::asNew("Green", TextFormat::GREEN),
         ];
         $map = TeamGameSystem::selectMap("map", $teams);
         $game = Game::asNew($map, $teams);
@@ -59,10 +59,10 @@ class TestGame extends TestCase
 
     public function testSortTeamsByScoreService() {
         $teams = [
-            new Team(TeamId::asNew(), "a", new Color(0, 0, 0), new Score(3)),
-            new Team(TeamId::asNew(), "b", new Color(0, 0, 0), new Score(2)),
-            new Team(TeamId::asNew(), "c", new Color(0, 0, 0), new Score(3)),
-            new Team(TeamId::asNew(), "d", new Color(0, 0, 0), new Score(6)),
+            new Team(TeamId::asNew(), "a", TextFormat::BLACK, new Score(3)),
+            new Team(TeamId::asNew(), "b", TextFormat::BLACK, new Score(2)),
+            new Team(TeamId::asNew(), "c", TextFormat::BLACK, new Score(3)),
+            new Team(TeamId::asNew(), "d", TextFormat::BLACK, new Score(6)),
         ];
         $sortedList = SortTeamsByScoreService::execute($teams);
 
