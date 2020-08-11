@@ -17,6 +17,10 @@ use team_game_system\store\PlayerDataStore;
 
 class TeamGameListener implements Listener
 {
+    /**
+     * @param PlayerJoinEvent $event
+     * @priority HIGH
+     */
     public function onJoin(PlayerJoinEvent $event) {
         $player = $event->getPlayer();
         PlayerDataStore::add(new PlayerData($player->getName(), null, null));
