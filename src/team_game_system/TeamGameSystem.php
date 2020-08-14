@@ -15,10 +15,12 @@ use team_game_system\model\TeamId;
 use team_game_system\pmmp\service\AddScorePMMPService;
 use team_game_system\pmmp\service\FinishGamePMMPService;
 use team_game_system\pmmp\service\JoinGamePMMPService;
+use team_game_system\pmmp\service\QuitGamePMMPService;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\AdaptMapToTeamsService;
 use team_game_system\service\AddScoreService;
+use team_game_system\service\QuitGameService;
 use team_game_system\service\RegisterGameService;
 use team_game_system\service\FinishGameService;
 use team_game_system\service\JoinGameService;
@@ -48,14 +50,37 @@ class TeamGameSystem
         FinishGamePMMPService::execute($game, $playersData);
     }
 
-    static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId = null): bool {
-        $result =  JoinGameService::execute($player->getName(), $gameId, $teamId);
+    static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId = null, bool $force = false): bool {
+        $playerData = PlayerDataStore::findByName($player->getName());
+        if ($playerData === null) return false;
+
+        if ($playerData->getGameId() !== null) {
+            if ($force) {
+                $result = JoinGameService::execute($player->getName(), $gameId, $teamId);
+
+                if ($result) {
+                    JoinGamePMMPService::execute($player, $gameId);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        $result = JoinGameService::execute($player->getName(), $gameId, $teamId);
 
         if ($result) {
             JoinGamePMMPService::execute($player, $gameId);
         }
 
         return $result;
+    }
+
+    static function quitGame(Player $player) {
+        $playerData = PlayerDataStore::findByName($player->getName());
+        QuitGameService::execute($player->getName());
+        QuitGamePMMPService::execute($player, $playerData->getGameId(), $playerData->getTeamId());
     }
 
     static function setSpawnPoint(Player $player): void {
@@ -88,6 +113,7 @@ class TeamGameSystem
     static function getAllGames(): array {
         return GameStore::getAll();
     }
+
     static function getGame(GameId $gameId): ?Game {
         return GameStore::findById($gameId);
     }
