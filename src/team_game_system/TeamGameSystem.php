@@ -11,6 +11,7 @@ use team_game_system\model\Game;
 use team_game_system\model\GameId;
 use team_game_system\model\Map;
 use team_game_system\model\Score;
+use team_game_system\model\Team;
 use team_game_system\model\TeamId;
 use team_game_system\pmmp\service\AddScorePMMPService;
 use team_game_system\pmmp\service\FinishGamePMMPService;
@@ -116,5 +117,15 @@ class TeamGameSystem
 
     static function getGame(GameId $gameId): ?Game {
         return GameStore::findById($gameId);
+    }
+
+    static function getTeam(GameId $gameId, TeamId $teamId): ?Team {
+        $game = GameStore::findById($gameId);
+        if ($game === null) return null;
+        foreach ($game->getTeams() as $team) {
+            if ($team->getId()->equals($teamId)) return $team;
+        }
+
+        return null;
     }
 }
