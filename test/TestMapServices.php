@@ -11,6 +11,7 @@ use team_game_system\service\AddSpawnPointService;
 use team_game_system\service\AddSpawnPointsGroupService;
 use team_game_system\service\CreateMapService;
 use team_game_system\service\RemoveSpawnPointService;
+use team_game_system\service\RemoveSpawnPointsGroupService;
 use team_game_system\store\MapsStore;
 
 class TestMapServices extends TestCase
@@ -59,6 +60,12 @@ class TestMapServices extends TestCase
         AddSpawnPointsGroupService::execute($map);
 
         $this->assertCount(4, MapsStore::findByName("map")->getSpawnPointGroups());
+    }
 
+    public function testRemoveSpawnPointsGroup() {
+        $map = MapsStore::findByName("map");
+        RemoveSpawnPointsGroupService::execute($map,0);
+
+        $this->assertCount(3, MapsStore::findByName("map")->getSpawnPointGroups());
     }
 }
