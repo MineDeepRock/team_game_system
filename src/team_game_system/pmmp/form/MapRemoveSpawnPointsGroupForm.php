@@ -8,6 +8,7 @@ use form_builder\models\modal_form_elements\ModalFormButton;
 use form_builder\models\ModalForm;
 use pocketmine\Player;
 use team_game_system\model\Map;
+use team_game_system\service\RemoveSpawnPointsGroupService;
 use team_game_system\store\MapsStore;
 
 class MapRemoveSpawnPointsGroupForm extends ModalForm
@@ -15,7 +16,7 @@ class MapRemoveSpawnPointsGroupForm extends ModalForm
     private $map;
     private $groupIndex;
 
-    public function __construct(Map $map,int $groupIndex) {
+    public function __construct(Map $map, int $groupIndex) {
         $this->map = $map;
         $this->groupIndex = $groupIndex;
         parent::__construct($map->getName(),
@@ -30,6 +31,7 @@ class MapRemoveSpawnPointsGroupForm extends ModalForm
 
     public function onClickButton1(Player $player): void {
         //更新後のデータを送る
+        RemoveSpawnPointsGroupService::execute($this->map, $this->groupIndex);
         $player->sendForm(new SpawnPointsGroupsForm(MapsStore::findByName($this->map->getName())));
         $player->sendMessage("index:({$this->groupIndex})を削除しました");
     }
