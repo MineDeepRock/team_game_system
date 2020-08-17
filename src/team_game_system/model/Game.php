@@ -19,6 +19,10 @@ class Game
      */
     private $id;
     /**
+     * @var GameType
+     */
+    private $type;
+    /**
      * @var Map
      */
     private $map;
@@ -53,8 +57,9 @@ class Game
      */
     private $timerHandler;
 
-    public function __construct(GameId $id, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null, ?int $elapsedTime = null) {
+    public function __construct(GameId $id, GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null, ?int $elapsedTime = null) {
         $this->id = $id;
+        $this->type = $type;
         $this->map = $map;
         $this->teams = $teams;
 
@@ -66,8 +71,8 @@ class Game
         $this->elapsedTime = $elapsedTime;
     }
 
-    static function asNew(Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null): Game {
-        return new Game(GameId::asNew(), $map, $teams, $maxScore, $maxPlayersCount, $timeLimit, 0);
+    static function asNew(GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null): Game {
+        return new Game(GameId::asNew(), $type, $map, $teams, $maxScore, $maxPlayersCount, $timeLimit, 0);
     }
 
     /**
@@ -155,5 +160,12 @@ class Game
      */
     public function getElapsedTime(): ?int {
         return $this->elapsedTime;
+    }
+
+    /**
+     * @return GameType
+     */
+    public function getType(): GameType {
+        return $this->type;
     }
 }

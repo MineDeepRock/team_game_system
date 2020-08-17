@@ -5,6 +5,7 @@ namespace team_game_system\store;
 
 use team_game_system\model\Game;
 use team_game_system\model\GameId;
+use team_game_system\model\GameType;
 
 class GameStore
 {
@@ -20,7 +21,7 @@ class GameStore
     static function delete(GameId $gameId): void {
 
         foreach (self::$games as $game) {
-            if($game->getId()->equals($gameId)) unset($game);
+            if ($game->getId()->equals($gameId)) unset($game);
         }
 
         self::$games = array_values(self::$games);
@@ -35,6 +36,18 @@ class GameStore
         }
 
         return null;
+    }
+
+    static function findByType(GameType $gameType): array {
+        $result = [];
+
+        foreach (self::$games as $game) {
+            if ($game->getType()->equals($gameType)) {
+                $result[] = $game;
+            }
+        }
+
+        return $result;
     }
 
     /**

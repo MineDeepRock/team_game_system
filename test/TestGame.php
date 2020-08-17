@@ -21,7 +21,7 @@ class TestGame extends TestCase
             Team::asNew("Green", TextFormat::GREEN),
         ];
         $map = TeamGameSystem::selectMap("map", $teams);
-        $game = Game::asNew($map, $teams);
+        $game = Game::asNew(new \team_game_system\model\GameType("TeamDeathMatch"), $map, $teams);
 
         TeamGameSystem::registerGame($game);
 

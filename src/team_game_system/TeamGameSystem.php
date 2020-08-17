@@ -9,6 +9,7 @@ use pocketmine\scheduler\TaskScheduler;
 use team_game_system\data_model\PlayerData;
 use team_game_system\model\Game;
 use team_game_system\model\GameId;
+use team_game_system\model\GameType;
 use team_game_system\model\Map;
 use team_game_system\model\Score;
 use team_game_system\model\Team;
@@ -117,6 +118,10 @@ class TeamGameSystem
 
     static function getGame(GameId $gameId): ?Game {
         return GameStore::findById($gameId);
+    }
+
+    static function findGamesByType(GameType $gameType): array {
+        return GameStore::findByType($gameType);
     }
 
     static function getTeam(GameId $gameId, TeamId $teamId): ?Team {
