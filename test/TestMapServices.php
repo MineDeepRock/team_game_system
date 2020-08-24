@@ -38,7 +38,7 @@ class TestMapServices extends TestCase
         CreateMapService::execute($map);
 
         $this->assertCount(3, MapsStore::findByName("map")->getSpawnPointGroups());
-        $this->assertEquals(true, file_exists(DataFolderPath::MAP . "map.json"));
+        $this->assertEquals(true, file_exists(DataFolderPath::$map . "map.json"));
     }
 
     public function testAddSpawnPoint() {

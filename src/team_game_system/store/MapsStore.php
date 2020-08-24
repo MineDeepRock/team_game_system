@@ -11,18 +11,18 @@ use team_game_system\model\Map;
 class MapsStore
 {
     static function findByName(string $name): ?Map {
-        if (!file_exists(DataFolderPath::MAP . $name . ".json")) return null;
+        if (!file_exists(DataFolderPath::$map . $name . ".json")) return null;
 
-        $mapsData = json_decode(file_get_contents(DataFolderPath::MAP . $name . ".json"), true);
+        $mapsData = json_decode(file_get_contents(DataFolderPath::$map . $name . ".json"), true);
         return MapJsonAdapter::decode($mapsData);
     }
 
     static function all(): array {
         $maps = [];
-        $dh = opendir(DataFolderPath::MAP);
+        $dh = opendir(DataFolderPath::$map);
         while (($fileName = readdir($dh)) !== false) {
-            if (filetype(DataFolderPath::MAP . $fileName) === "file") {
-                $data = json_decode(file_get_contents(DataFolderPath::MAP . $fileName), true);
+            if (filetype(DataFolderPath::$map . $fileName) === "file") {
+                $data = json_decode(file_get_contents(DataFolderPath::$map . $fileName), true);
                 $maps[] = MapJsonAdapter::decode($data);
             }
         }
@@ -33,10 +33,10 @@ class MapsStore
     }
 
     static function create(Map $map): void {
-        file_put_contents(DataFolderPath::MAP . $map->getName() . ".json", json_encode(MapJsonAdapter::encode($map)));
+        file_put_contents(DataFolderPath::$map . $map->getName() . ".json", json_encode(MapJsonAdapter::encode($map)));
     }
 
     static function update(Map $map): void {
-        file_put_contents(DataFolderPath::MAP . $map->getName() . ".json", json_encode(MapJsonAdapter::encode($map)));
+        file_put_contents(DataFolderPath::$map . $map->getName() . ".json", json_encode(MapJsonAdapter::encode($map)));
     }
 }

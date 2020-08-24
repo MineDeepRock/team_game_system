@@ -11,8 +11,8 @@ class RemoveMapService
 {
     static function execute(Map $map): void {
         //TODO:使用中だったらキャンセル
-        if (file_exists(DataFolderPath::MAP . $map->getName() . ".json")) {
-            unlink(DataFolderPath::MAP . $map->getName() . ".json");
+        if (file_exists(DataFolderPath::$map . $map->getName() . ".json")) {
+            unlink(DataFolderPath::$map . $map->getName() . ".json");
         }
     }
 }
