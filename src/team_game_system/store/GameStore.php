@@ -20,8 +20,8 @@ class GameStore
 
     static function delete(GameId $gameId): void {
 
-        foreach (self::$games as $game) {
-            if ($game->getId()->equals($gameId)) unset($game);
+        foreach (self::$games as $key => $game) {
+            if ($game->getId()->equals($gameId)) unset(self::$games[$key]);
         }
 
         self::$games = array_values(self::$games);
