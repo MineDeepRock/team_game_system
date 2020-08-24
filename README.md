@@ -9,8 +9,8 @@
 - Minecraft内でのマップ作成とスポーン地点設定、その他マップ管理
 
 # サンプル
-
-[チームデスマッチ](https://github.com/suinua/example_team_death_match)
+[Qiitaの記事](https://qiita.com/suinua/items/d41309e2ec28893cae8a)  
+[チームデスマッチ](https://github.com/suinua/TeamDeathMatch)
 
 
 # 使い方
@@ -49,7 +49,7 @@ $teams = [
     Team::asNew("Green", TextFormat::GREEN),
 ];
 $map = TeamGameSystem::selectMap("map", $teams);
-$game = Game::asNew($map, $teams);
+$game = Game::asNew(new \team_game_system\model\GameType("TeamDeathMatch"),$map, $teams);
 
 TeamGameSystem::registerGame($game);
 ```
@@ -120,5 +120,5 @@ repositoriesに以下を追加
 ```
 requireに以下を追加
 ```json
-"suinua/team_game_system-mp": "dev-master",
+"suinua/team_game_system": "dev-master",
 ```
