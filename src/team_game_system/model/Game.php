@@ -102,8 +102,6 @@ class Game
         //TODO:これ本当にここか？
         $this->timerHandler = $scheduler->scheduleDelayedRepeatingTask(new ClosureTask(function (int $currentTick): void {
             $this->elapsedTime += 1;
-            $event = new UpdatedGameTimerEvent($this->id, $this->timeLimit, $this->elapsedTime);
-            $event->call();
 
             if ($this->timeLimit !== null) {
                 if ($this->timeLimit <= $this->elapsedTime) {
@@ -111,6 +109,11 @@ class Game
                     FinishGameService::execute($this->id);
                     FinishGamePMMPService::execute($this, $playersData);
                 }
+            }
+
+            if (!$this->isClosed) {
+                $event = new UpdatedGameTimerEvent($this->id, $this->timeLimit, $this->elapsedTime);
+                $event->call();
             }
         }), 20, 20);
     }
