@@ -43,14 +43,14 @@ class TestMapServices extends TestCase
 
     public function testAddSpawnPoint() {
         $map = MapsStore::findByName("map");
-        AddSpawnPointService::execute($map, 0, new SpawnPoint(new Vector3(4, 0, 0)));
+        AddSpawnPointService::execute($map, 1, new SpawnPoint(new Vector3(4, 0, 0)));
 
         $this->assertCount(4, MapsStore::findByName("map")->getSpawnPointGroups()[0]->getSpawnPoints());
     }
 
     public function testRemoveSpawnPoint() {
         $map = MapsStore::findByName("map");
-        RemoveSpawnPointService::execute($map, 0, new SpawnPoint(new Vector3(4, 0, 0)));
+        RemoveSpawnPointService::execute($map, 1, new SpawnPoint(new Vector3(0, 2, 0)));
 
         $this->assertCount(3, MapsStore::findByName("map")->getSpawnPointGroups()[0]->getSpawnPoints());
     }
