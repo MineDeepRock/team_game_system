@@ -13,8 +13,9 @@ use team_game_system\store\PlayerDataStore;
 
 class AddScoreService
 {
-    static function execute(GameId $gameId, TeamId $teamId, Score $score): void {
+    static function execute(GameId $gameId, TeamId $teamId, Score $score): bool {
         $game = GameStore::findById($gameId);
+        if ($game === null) return false;
         $targetTeam = null;
 
         foreach ($game->getTeams() as $team) {
@@ -25,7 +26,7 @@ class AddScoreService
 
         $targetTeam->addScore($score);
 
-        if ($game->getMaxScore() === null) return;
+        if ($game->getMaxScore() === null) return true;
         if($targetTeam->getScore()->getValue() >= $game->getMaxScore()->getValue()) {
             $playersData = PlayerDataStore::getGamePlayers($gameId);
             $game = GameStore::findById($gameId);
@@ -33,5 +34,7 @@ class AddScoreService
             FinishGameService::execute($gameId);
             FinishGamePMMPService::execute($game, $playersData);
         }
+
+        return true;
     }
 }

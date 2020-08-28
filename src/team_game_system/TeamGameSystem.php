@@ -94,8 +94,10 @@ class TeamGameSystem
     }
 
     static function addScore(GameId $gameId, TeamId $teamId, Score $score): void {
-        AddScoreService::execute($gameId, $teamId, $score);
-        AddScorePMMPService::execute($gameId, $teamId, $score);
+        $result = AddScoreService::execute($gameId, $teamId, $score);
+        if ($result) {
+            AddScorePMMPService::execute($gameId, $teamId, $score);
+        }
     }
 
     //PlayerData
