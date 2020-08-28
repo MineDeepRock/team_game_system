@@ -11,17 +11,16 @@ use team_game_system\store\MapsStore;
 
 class RemoveSpawnPointService
 {
-    static function execute(Map $map, int $index, SpawnPoint $targetSpawnPoint): void {
+    static function execute(Map $map, int $groupIndex, SpawnPoint $targetSpawnPoint): void {
         $spawnPointsGroups = $map->getSpawnPointGroups();
 
-        $i = 0;
-        foreach ($spawnPointsGroups as $index1 => $spawnPointGroup) {
-            if ($i === $index) {
+        foreach ($spawnPointsGroups as $index => $spawnPointGroup) {
+            if ($index === $groupIndex) {
                 $newSpawnPoints = [];
                 foreach ($spawnPointGroup->getSpawnPoints() as $spawnPoint) {
                     if (!$spawnPoint->equals($targetSpawnPoint)) $newSpawnPoints[] = $spawnPoint;
                 }
-                $spawnPointsGroups[$index1] = new SpawnPointsGroup($newSpawnPoints);
+                $spawnPointsGroups[$index] = new SpawnPointsGroup($newSpawnPoints);
             }
         }
 
