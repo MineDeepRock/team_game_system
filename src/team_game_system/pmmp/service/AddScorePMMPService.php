@@ -14,6 +14,7 @@ class AddScorePMMPService
 {
     static function execute(GameId $gameId, TeamId $teamId, Score $score): void {
         $game = GameStore::findById($gameId);
+        if ($game === null) return;
         $targetTeam = null;
 
         foreach ($game->getTeams() as $team) {
