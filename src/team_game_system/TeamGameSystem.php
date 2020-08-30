@@ -56,21 +56,9 @@ class TeamGameSystem
         $playerData = PlayerDataStore::findByName($player->getName());
         if ($playerData === null) return false;
 
-        if ($playerData->getGameId() !== null) {
-            if ($force) {
-                $result = JoinGameService::execute($player->getName(), $gameId, $teamId);
+        if ($playerData->getGameId() !== null) return false;
 
-                if ($result) {
-                    JoinGamePMMPService::execute($player, $gameId);
-                }
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-
-        $result = JoinGameService::execute($player->getName(), $gameId, $teamId);
+        $result = JoinGameService::execute($player->getName(), $gameId, $teamId, $force);
 
         if ($result) {
             JoinGamePMMPService::execute($player, $gameId);
