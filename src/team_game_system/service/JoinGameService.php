@@ -14,6 +14,10 @@ use team_game_system\TeamGameSystem;
 class JoinGameService
 {
     static function execute(string $playerName, GameId $gameId, ?TeamId $teamId, bool $force = false): bool {
+
+        $playerData = PlayerDataStore::findByName($playerName);
+        if ($playerData->getGameId() !== null) return false;
+
         $game = GameStore::findById($gameId);
         if ($game->isClosed()) return false;
 
