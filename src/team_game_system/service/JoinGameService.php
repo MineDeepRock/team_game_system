@@ -55,7 +55,7 @@ class JoinGameService
             $difference = abs(count($popularTeamMembers) - count($notPopularTeamMembers));
 
             //一番人気のチームに参加しようとしてたら
-            if ($teamId->equals($popularTeam->getTeamId())) {
+            if ($teamId->equals($popularTeam->getId())) {
                 //人数差が２以上ならダメ
                 if ($difference >= 2) return false;
                 PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
