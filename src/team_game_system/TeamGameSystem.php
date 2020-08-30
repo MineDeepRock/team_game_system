@@ -17,11 +17,13 @@ use team_game_system\model\TeamId;
 use team_game_system\pmmp\service\AddScorePMMPService;
 use team_game_system\pmmp\service\FinishGamePMMPService;
 use team_game_system\pmmp\service\JoinGamePMMPService;
+use team_game_system\pmmp\service\MoveTeamPMMPService;
 use team_game_system\pmmp\service\QuitGamePMMPService;
 use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\AdaptMapToTeamsService;
 use team_game_system\service\AddScoreService;
+use team_game_system\service\MoveTeamService;
 use team_game_system\service\QuitGameService;
 use team_game_system\service\RegisterGameService;
 use team_game_system\service\FinishGameService;
@@ -53,15 +55,20 @@ class TeamGameSystem
     }
 
     static function joinGame(Player $player, GameId $gameId, ?TeamId $teamId = null, bool $force = false): bool {
-        $playerData = PlayerDataStore::findByName($player->getName());
-        if ($playerData === null) return false;
-
-        if ($playerData->getGameId() !== null) return false;
-
         $result = JoinGameService::execute($player->getName(), $gameId, $teamId, $force);
 
         if ($result) {
             JoinGamePMMPService::execute($player, $gameId);
+        }
+
+        return $result;
+    }
+
+    static function moveTeam(Player $player, GameId $gameId, ?TeamId $teamId = null, bool $force = false) :bool {
+        $result = MoveTeamService::execute($player->getName(), $gameId, $teamId, $force);
+
+        if ($result) {
+            MoveTeamPMMPService::execute($player, $gameId);
         }
 
         return $result;
