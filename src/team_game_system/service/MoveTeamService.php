@@ -6,6 +6,7 @@ namespace team_game_system\service;
 
 use team_game_system\data_model\PlayerData;
 use team_game_system\model\GameId;
+use team_game_system\model\Team;
 use team_game_system\model\TeamId;
 use team_game_system\store\GameStore;
 use team_game_system\store\PlayerDataStore;
@@ -36,16 +37,18 @@ class MoveTeamService
             }
 
             //人数差が２人以上なら
-            $popularTeam = $teams[0];
+            /** @var Team $popularTeam */
+            $popularTeam = end($teams);
             $popularTeamMembers = TeamGameSystem::getTeamPlayersData($popularTeam->getId());
 
-            $notPopularTeam = end($teams);
+            /** @var Team $notPopularTeam */
+            $notPopularTeam = $teams[0];
             $notPopularTeamMembers = TeamGameSystem::getTeamPlayersData($notPopularTeam->getId());
 
             $difference = abs(count($popularTeamMembers) - count($notPopularTeamMembers));
 
             //一番人気のチームに参加しようとしてたら
-            if ($teamId->equals($popularTeam->getTeamId())) {
+            if ($teamId->equals($popularTeam->getId())) {
                 //人数差が２以上ならダメ
                 if ($difference >= 2) return false;
                 PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
