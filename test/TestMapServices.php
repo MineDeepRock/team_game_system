@@ -16,7 +16,7 @@ use team_game_system\store\MapsStore;
 
 class TestMapServices extends TestCase
 {
-    public function testCreateMap() {
+    public static function setUpBeforeClass(): void {
         $map = new Map("map", "map", [
             new SpawnPointsGroup([
                 new SpawnPoint(new Vector3(1, 0, 0)),
@@ -36,14 +36,11 @@ class TestMapServices extends TestCase
         ]);
 
         CreateMapService::execute($map);
-
-        $this->assertCount(3, MapsStore::findByName("map")->getSpawnPointGroups());
-        $this->assertEquals(true, file_exists(DataFolderPath::$map . "map.json"));
     }
 
     public function testAddSpawnPoint() {
         $map = MapsStore::findByName("map");
-        AddSpawnPointService::execute($map, 1, new SpawnPoint(new Vector3(4, 0, 0)));
+        AddSpawnPointService::execute($map, 0, new SpawnPoint(new Vector3(4, 0, 0)));
 
         $this->assertCount(4, MapsStore::findByName("map")->getSpawnPointGroups()[0]->getSpawnPoints());
     }
@@ -52,7 +49,7 @@ class TestMapServices extends TestCase
         $map = MapsStore::findByName("map");
         RemoveSpawnPointService::execute($map, 1, new SpawnPoint(new Vector3(0, 2, 0)));
 
-        $this->assertCount(3, MapsStore::findByName("map")->getSpawnPointGroups()[0]->getSpawnPoints());
+        $this->assertCount(2, MapsStore::findByName("map")->getSpawnPointGroups()[1]->getSpawnPoints());
     }
 
     public function testAddSpawnPointsGroup() {
@@ -64,7 +61,7 @@ class TestMapServices extends TestCase
 
     public function testRemoveSpawnPointsGroup() {
         $map = MapsStore::findByName("map");
-        RemoveSpawnPointsGroupService::execute($map,0);
+        RemoveSpawnPointsGroupService::execute($map, 0);
 
         $this->assertCount(3, MapsStore::findByName("map")->getSpawnPointGroups());
     }
