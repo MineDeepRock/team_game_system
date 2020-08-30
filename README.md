@@ -67,6 +67,10 @@ TeamGameSystem::joinGame($player, $game->getId());
 //指定のチームに参加
 $team = $game->getTeams()[array_rand($game->getTeams())];
 TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
+
+//指定のチームに強制で参加
+$team = $game->getTeams()[array_rand($game->getTeams())];
+TeamGameSystem::joinGame($player, $game->getId(), $team->getId(), true);
 ```
 
 ### スコアを追加
@@ -88,6 +92,9 @@ TeamGameSystem::setSpawnPoint($player);
 ## イベント一覧
 ### PlayerJoinedGameEvent
 プレイヤーがゲームに参加したときに呼び出されます
+
+### PlayerMovedGameEvent
+プレイヤーがチームを移動したときに呼び出されます
 
 ### PlayerKilledPlayerEvent
 プレイヤーが相手に倒されたときに呼び出されます
