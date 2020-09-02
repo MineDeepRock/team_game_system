@@ -46,7 +46,7 @@ class JoinGameService
                 return true;
             }
 
-            //人数差が２人以上なら
+            //人数差が1人以上なら
             /** @var Team $popularTeam */
             $popularTeam = end($teams);
             $popularTeamMembers = TeamGameSystem::getTeamPlayersData($popularTeam->getId());
@@ -60,7 +60,7 @@ class JoinGameService
             //一番人気のチームに参加しようとしてたら
             if ($teamId->equals($popularTeam->getId())) {
                 //人数差が２以上ならダメ
-                if ($difference >= 2) return false;
+                if ($difference >= 1) return false;
                 PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
                 return true;
             }
