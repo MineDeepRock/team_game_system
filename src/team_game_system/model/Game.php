@@ -52,19 +52,14 @@ class Game
     private $isStarted;
     private $isClosed;
 
-    /**
-     * @var TaskHandler
-     */
-    private $timerHandler;
-
-    public function __construct(GameId $id, GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null, ?int $elapsedTime = null) {
+    public function __construct(GameId $id, GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null, ?int $elapsedTime = null, $isStarted = false, $isClosed = false) {
         $this->id = $id;
         $this->type = $type;
         $this->map = $map;
         $this->teams = $teams;
 
-        $this->isStarted = false;
-        $this->isClosed = false;
+        $this->isStarted = $isStarted;
+        $this->isClosed = $isClosed;
         $this->maxScore = $maxScore;
         $this->maxPlayersCount = $maxPlayersCount;
         $this->timeLimit = $timeLimit;
@@ -72,7 +67,7 @@ class Game
     }
 
     static function asNew(GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null): Game {
-        return new Game(GameId::asNew(), $type, $map, $teams, $maxScore, $maxPlayersCount, $timeLimit, 0);
+        return new Game(GameId::asNew(), $type, $map, $teams, $maxScore, $maxPlayersCount, $timeLimit, 0, false, false);
     }
 
     /**
@@ -96,31 +91,16 @@ class Game
         return $this->teams;
     }
 
-    public function start(TaskScheduler $scheduler): void {
+    public function start(): void {
         $this->isStarted = true;
+    }
 
-        //TODO:これ本当にここか？
-        $this->timerHandler = $scheduler->scheduleDelayedRepeatingTask(new ClosureTask(function (int $currentTick): void {
-            $this->elapsedTime += 1;
-
-            if ($this->timeLimit !== null) {
-                if ($this->timeLimit <= $this->elapsedTime) {
-                    $playersData = PlayerDataStore::getGamePlayers($this->id);
-                    FinishGameService::execute($this->id);
-                    FinishGamePMMPService::execute($this, $playersData);
-                }
-            }
-
-            if (!$this->isClosed) {
-                $event = new UpdatedGameTimerEvent($this->id, $this->timeLimit, $this->elapsedTime);
-                $event->call();
-            }
-        }), 20, 20);
+    public function pass(int $second): void {
+        $this->elapsedTime += 1;
     }
 
     public function close(): void {
         $this->isClosed = true;
-        $this->timerHandler->cancel();
     }
 
     /**
