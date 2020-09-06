@@ -46,6 +46,10 @@ class PlayerDataStore
     }
 
 
+    /**
+     * @param TeamId $teamId
+     * @return PlayerData[]
+     */
     static function getTeamPlayers(TeamId $teamId): array {
         $result = [];
         foreach (self::$playersData as $playerData) {
