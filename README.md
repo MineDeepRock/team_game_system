@@ -7,6 +7,7 @@
 - チーム配分
 - 人数制限
 - Minecraft内でのマップ作成とスポーン地点設定、その他マップ管理
+- チームチャット`/tc [message]`
 
 # サンプル
 [Qiitaの記事](https://qiita.com/suinua/items/d41309e2ec28893cae8a)  
