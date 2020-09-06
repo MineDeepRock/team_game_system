@@ -23,6 +23,7 @@ use team_game_system\pmmp\service\SetSpawnPMMPService;
 use team_game_system\pmmp\service\StartGamePMMPService;
 use team_game_system\service\AdaptMapToTeamsService;
 use team_game_system\service\AddScoreService;
+use team_game_system\service\FindTeamService;
 use team_game_system\service\MoveTeamService;
 use team_game_system\service\QuitGameService;
 use team_game_system\service\RegisterGameService;
@@ -64,7 +65,7 @@ class TeamGameSystem
         return $result;
     }
 
-    static function moveTeam(Player $player, GameId $gameId, ?TeamId $teamId = null, bool $force = false) :bool {
+    static function moveTeam(Player $player, GameId $gameId, ?TeamId $teamId = null, bool $force = false): bool {
         $result = MoveTeamService::execute($player->getName(), $gameId, $teamId, $force);
 
         if ($result) {
@@ -122,12 +123,6 @@ class TeamGameSystem
     }
 
     static function getTeam(GameId $gameId, TeamId $teamId): ?Team {
-        $game = GameStore::findById($gameId);
-        if ($game === null) return null;
-        foreach ($game->getTeams() as $team) {
-            if ($team->getId()->equals($teamId)) return $team;
-        }
-
-        return null;
+        return FindTeamService::execute($gameId, $teamId);
     }
 }
