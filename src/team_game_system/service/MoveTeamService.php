@@ -25,10 +25,12 @@ class MoveTeamService
         $game = GameStore::findById($gameId);
         if ($game->isClosed()) return false;
 
-        //強制 TODO:JoinGameServiceとコードがダブっている
+        //TODO:JoinGameServiceとコードが一部ダブっている
+        //指定あり、強制
         if ($force) {
             PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
             return true;
+            //指定あり、非強制
         } else {
             $teams = SortTeamsByPlayersCountService::execute($game->getTeams());
             if (count($teams) <= 1) {
@@ -36,7 +38,7 @@ class MoveTeamService
                 return true;
             }
 
-            //人数差が２人以上なら
+            //人数の差を求める
             /** @var Team $popularTeam */
             $popularTeam = end($teams);
             $popularTeamMembers = TeamGameSystem::getTeamPlayersData($popularTeam->getId());
@@ -49,10 +51,18 @@ class MoveTeamService
 
             //一番人気のチームに参加しようとしてたら
             if ($teamId->equals($popularTeam->getId())) {
-                //人数差が２以上ならダメ
-                if ($difference >= 2) return false;
-                PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
-                return true;
+
+                //人数差制限が設定されてなかったら
+                if ($game->getMaxPlayersDifference() === null) {
+                    PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
+                    return true;
+                } else {
+                    //人数差が$maxPlayersDifferenceより大きければダメ
+                    //どっちかのチームを抜けるため、差が+1される
+                    if ($difference+1 >= $game->getMaxPlayersDifference()) return false;
+                    PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
+                    return true;
+                }
             }
 
             PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));

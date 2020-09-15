@@ -35,10 +35,11 @@ class JoinGameService
             return true;
         }
 
-        //強制
+        //指定あり、強制
         if ($force) {
             PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
             return true;
+        //指定あり、非強制
         } else {
             $teams = SortTeamsByPlayersCountService::execute($game->getTeams());
             if (count($teams) <= 1) {
@@ -59,13 +60,14 @@ class JoinGameService
 
             //一番人気のチームに参加しようとしてたら
             if ($teamId->equals($popularTeam->getId())) {
-                if ($game->getMaxPlayersDifference() !== null) {
-                    //人数差が$maxPlayersDifferenceより大きければダメ
-                    if ($difference >= $game->getMaxPlayersDifference()) return false;
-                    
+
+                //人数差制限が設定されてなかったら
+                if ($game->getMaxPlayersDifference() === null) {
                     PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
                     return true;
                 } else {
+                    //人数差が$maxPlayersDifferenceより大きければダメ
+                    if ($difference >= $game->getMaxPlayersDifference()) return false;
                     PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
                     return true;
                 }
