@@ -40,6 +40,10 @@ class Game
     private $maxPlayersCount;
     /**
      * @var int|null
+     */
+    private $maxPlayersDifference;
+    /**
+     * @var int|null
      * second
      */
     private $timeLimit;
@@ -52,7 +56,7 @@ class Game
     private $isStarted;
     private $isClosed;
 
-    public function __construct(GameId $id, GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null, ?int $elapsedTime = null, $isStarted = false, $isClosed = false) {
+    private function __construct(GameId $id, GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $maxPlayersDifference = null, ?int $timeLimit = null, ?int $elapsedTime = null, $isStarted = false, $isClosed = false) {
         $this->id = $id;
         $this->type = $type;
         $this->map = $map;
@@ -60,14 +64,17 @@ class Game
 
         $this->isStarted = $isStarted;
         $this->isClosed = $isClosed;
+
         $this->maxScore = $maxScore;
         $this->maxPlayersCount = $maxPlayersCount;
+        $this->maxPlayersDifference = $maxPlayersDifference;
         $this->timeLimit = $timeLimit;
+
         $this->elapsedTime = $elapsedTime;
     }
 
-    static function asNew(GameType $type, Map $map, array $teams, ?Score $maxScore = null, ?int $maxPlayersCount = null, ?int $timeLimit = null): Game {
-        return new Game(GameId::asNew(), $type, $map, $teams, $maxScore, $maxPlayersCount, $timeLimit, 0, false, false);
+    static function asNew(GameType $type, Map $map, array $teams): Game {
+        return new Game(GameId::asNew(), $type, $map, $teams);
     }
 
     /**
@@ -134,6 +141,13 @@ class Game
     /**
      * @return int|null
      */
+    public function getMaxPlayersDifference(): ?int {
+        return $this->maxPlayersDifference;
+    }
+
+    /**
+     * @return int|null
+     */
     public function getTimeLimit(): ?int {
         return $this->timeLimit;
     }
@@ -150,5 +164,33 @@ class Game
      */
     public function getType(): GameType {
         return $this->type;
+    }
+
+    /**
+     * @param Score|null $maxScore
+     */
+    public function setMaxScore(?Score $maxScore): void {
+        $this->maxScore = $maxScore;
+    }
+
+    /**
+     * @param int|null $maxPlayersCount
+     */
+    public function setMaxPlayersCount(?int $maxPlayersCount): void {
+        $this->maxPlayersCount = $maxPlayersCount;
+    }
+
+    /**
+     * @param int|null $maxPlayersDifference
+     */
+    public function setMaxPlayersDifference(?int $maxPlayersDifference): void {
+        $this->maxPlayersDifference = $maxPlayersDifference;
+    }
+
+    /**
+     * @param int|null $timeLimit
+     */
+    public function setTimeLimit(?int $timeLimit): void {
+        $this->timeLimit = $timeLimit;
     }
 }
