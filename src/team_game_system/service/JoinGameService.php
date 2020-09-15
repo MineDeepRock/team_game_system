@@ -59,10 +59,16 @@ class JoinGameService
 
             //一番人気のチームに参加しようとしてたら
             if ($teamId->equals($popularTeam->getId())) {
-                //人数差が$maxPlayersDifferenceより大きければダメ
-                if ($difference >= $game->getMaxPlayersDifference()) return false;
-                PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
-                return true;
+                if ($game->getMaxPlayersDifference() !== null) {
+                    //人数差が$maxPlayersDifferenceより大きければダメ
+                    if ($difference >= $game->getMaxPlayersDifference()) return false;
+                    
+                    PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
+                    return true;
+                } else {
+                    PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
+                    return true;
+                }
             }
 
             PlayerDataStore::update(new PlayerData($playerName, $gameId, $teamId));
