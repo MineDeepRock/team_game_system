@@ -27,6 +27,10 @@ class GameStore
         self::$games = array_values(self::$games);
     }
 
+    static function deleteAll():void {
+        self::$games = [];
+    }
+
     static function findById(GameId $gameId): ?Game {
 
         foreach (self::$games as $game) {
