@@ -18,7 +18,6 @@ class StartGameService
         $game = GameStore::findById($gameId);
         $game->start();
 
-        //TODO:これ本当にここか？
         $timerHandler = $scheduler->scheduleDelayedRepeatingTask(new ClosureTask(function (int $currentTick) use ($gameId): void {
             $game = GameStore::findById($gameId);
             $game->pass(1);
