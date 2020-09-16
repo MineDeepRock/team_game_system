@@ -208,11 +208,11 @@ repositoriesに以下を追加
 ```json
 {
   "type": "git",
-  "name": "suinua/team_game_system",
+  "name": "mine_deep_rock/team_game_system",
   "url": "https://github.com/MineDeepRock/team_game_system"
 }
 ```
 requireに以下を追加
 ```json
-"suinua/team_game_system": "dev-master",
+"mine_deep_rock/team_game_system": "dev-master",
 ```
