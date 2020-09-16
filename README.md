@@ -6,6 +6,7 @@
 - 時間制限の管理
 - チーム配分
 - 人数制限
+- 人数差制限
 - Minecraft内でのマップ作成とスポーン地点設定、その他マップ管理
 - チームチャット`/tc [message]`
 
@@ -14,9 +15,7 @@
 [チームデスマッチ](https://github.com/suinua/TeamDeathMatch)
 
 
-# 使い方
-
-## マップの設定
+# マップの設定
 コマンド`/map`で出てくるフォームで操作します。  
 
 - map name  
@@ -29,7 +28,7 @@
 マップの`スポーン地点グループ`はチームのスポーン地点はと一致します。  
 (スポーン地点グループはランダムで割り当てられる)  
 
-## API
+# API
 `Game`はIDとTYPEを持っています。  
 IDはそれぞれユニークな物で、API側で指定します。  
 TYPEは重複しても大丈夫な物で、ユーザーが指定します。  
@@ -37,76 +36,163 @@ TYPEは複数種類のゲームモード(チーデス、ドミネーション)�
   
 GameTypeListなどのクラスを作り管理することを推奨します。
 
+## Mapに関するAPI
+
+### マップを選択
+```php
+use pocketmine\utils\TextFormat;use team_game_system\TeamGameSystem;
+use team_game_system\model\Team;
+
+$teams = [
+    Team::asNew("RED",TextFormat::RED),
+    Team::asNew("Blue",TextFormat::BLUE),
+];
+
+$map = TeamGameSystem::selectMap("map_name", $teams);
+```
+
+## ゲームを操作するAPI
 
 ### ゲームを作成
 ```php
-use pocketmine\utils\TextFormat;use team_game_system\model\Game;
+use pocketmine\utils\TextFormat;
+use team_game_system\model\Game;
+use team_game_system\model\GameType
 use team_game_system\model\Team;
-use team_game_system\TeamGameSystem;
 
 $teams = [
-    Team::asNew("Red", TextFormat::RED),
-    Team::asNew("Blue", TextFormat::BLUE),
-    Team::asNew("Green", TextFormat::GREEN),
+    Team::asNew("RED",TextFormat::RED),
+    Team::asNew("Blue",TextFormat::BLUE),
 ];
-$map = TeamGameSystem::selectMap("map", $teams);
-$game = Game::asNew(new \team_game_system\model\GameType("TeamDeathMatch"),$map, $teams);
+
+$game = Game::asNew(new GameType("TDM", $map, $teams));
+
+//↓設定しなくてもOK
+$game->setMaxPlayersCount(30);//試合に参加できる最大人数
+$game->setMaxPlayersDifference(1);//チーム間の人数差制限
+$game->setMaxScore(50);//勝利判定スコア
+$game->setTimeLimit(600);//時間制限(秒)
+```
+### ゲームを登録
+```php
+use team_game_system\TeamGameSystem;
 
 TeamGameSystem::registerGame($game);
 ```
-
-### ゲームに参加させる
+### ゲームをスタート
 ```php
 use team_game_system\TeamGameSystem;
-$player = null;
 
-//人数が一番少ないチームに参加
-$games = TeamGameSystem::getAllGames();
-$game = $games[array_rand($games)];
-TeamGameSystem::joinGame($player, $game->getId());
+TeamGameSystem::startGame($scheduler, $gameId);
+```
+### ゲームを終了
+```php
+use team_game_system\TeamGameSystem;
 
-//指定のチームに参加
-$team = $game->getTeams()[array_rand($game->getTeams())];
-TeamGameSystem::joinGame($player, $game->getId(), $team->getId());
-
-//指定のチームに強制で参加
-$team = $game->getTeams()[array_rand($game->getTeams())];
-TeamGameSystem::joinGame($player, $game->getId(), $team->getId(), true);
+TeamGameSystem::finishedGame($gameId);
 ```
 
+## ゲームデータを取得するAPI
+
+### すべてのゲームを取得
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::getAllGames();
+```
+### IDからゲームを取得
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::getGame($gameId);
+```
+### TYPEからゲームを取得
+```php
+use team_game_system\model\GameType;
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::findGamesByType(new GameType("TDM"));
+```
+### チームを取得
+```php
+use team_game_system\model\GameType;
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::getTeam($gameId, $teamId);
+```
+
+## プレイヤーに関するAPI
+### ゲームに参加
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::joinGame($plyaer, $gameId);
+```
+### チームを移動
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::joinGame($plyaer, $gameId);
+```
+### ゲームから抜ける
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::quitGame($plyaer);
+```
+
+## 試合に関するAPI
 ### スコアを追加
 ```php
 use team_game_system\model\Score;
 use team_game_system\TeamGameSystem;
 
-$playerData = TeamGameSystem::getPlayerData($player);
-TeamGameSystem::addScore($playerData->getGameId(), $playerData->getTeamId(), new Score(10)); 
+TeamGameSystem::addScore($gameId,$teamId,new Score(1));
 ```
-
-### ランダムでスポーン地点をセット
+### マップに登録されたスポーン地点を、ランダムにセット
 ```php
 use team_game_system\TeamGameSystem;
 
 TeamGameSystem::setSpawnPoint($player);
 ```
 
-## イベント一覧
-### PlayerJoinedGameEvent
+## プレイヤーデータに関するAPI
+### 名前からプレイヤーデータを取得
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::getPlayerData($player);
+```
+### 特定の試合に参加しているプレイヤーデータを取得
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::getGamePlayersData($gameId);
+```
+### 特定のチームに参加しているプレイヤーデータを取得
+```php
+use team_game_system\TeamGameSystem;
+
+TeamGameSystem::getTeamPlayersData($teamId);
+```
+
+# イベント一覧
+## PlayerJoinedGameEvent
 プレイヤーがゲームに参加したときに呼び出されます
 
-### PlayerMovedGameEvent
+## PlayerMovedGameEvent
 プレイヤーがチームを移動したときに呼び出されます
 
-### PlayerKilledPlayerEvent
+## PlayerKilledPlayerEvent
 プレイヤーが相手に倒されたときに呼び出されます
 
-### AddedScoreEvent
+## AddedScoreEvent
 スコアが追加されたときに呼び出されます
 
-### PlayerQuitGameEvent
+## PlayerQuitGameEvent
 プレイヤーがゲームから抜けたときに呼び出されます
 
-### StartedGameEvent
+## StartedGameEvent
 ゲームが開始されたときに呼び出されます
 
 ### UpdatedGameTimerEvent
