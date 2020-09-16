@@ -1,5 +1,5 @@
 {
-  "name": "suinua/team_game_system",
+  "name": "mine_deep_rock/team_game_system",
   "authors": [
     {
       "name": "suinua"
@@ -15,19 +15,19 @@
   "repositories": [
     {
       "type": "git",
-      "name": "suinua/form_builder",
+      "name": "mine_deep_rock/form_builder",
       "url": "https://github.com/MineDeepRock/form_builder"
     },
     {
       "type": "git",
-      "name": "suinua/slot_menu_system",
+      "name": "mine_deep_rock/slot_menu_system",
       "url": "https://github.com/MineDeepRock/slot_menu_system"
     }
   ],
   "require": {
     "pocketmine/pocketmine-mp": "*",
-    "suinua/form_builder": "dev-master",
-    "suinua/slot_menu_system": "dev-master",
+    "mine_deep_rock/form_builder": "dev-master",
+    "mine_deep_rock/slot_menu_system": "dev-master",
     "ext-json": "*"
   },
   "require-dev": {
