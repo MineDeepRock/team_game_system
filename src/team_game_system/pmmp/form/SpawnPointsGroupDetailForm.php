@@ -27,19 +27,19 @@ class SpawnPointsGroupDetailForm extends SimpleForm
                 "スポーン地点を追加",
                 null,
                 function (Player $player) use ($map, $groupIndex, $group) {
-                    SlotMenuSystem::send($player, new AddSpawnPointSlotMenu($map, $groupIndex, new SpawnPoint($player->getPosition())));
+                    SlotMenuSystem::send($player, new AddSpawnPointSlotMenu($map, $groupIndex));
                 }
             )
         ];
 
-        foreach ($group->getSpawnPoints() as $key => $spawnPoint) {
+        foreach ($group->getSpawnPoints() as $spawnPoint) {
             $pos = $spawnPoint->getPosition();
             $text = "x:" . intval($pos->getX()) . ",y:" . intval($pos->getY()) . ",z:" . intval($pos->getZ());
             $buttons[] = new SimpleFormButton(
                 $text,
                 null,
-                function (Player $player) use ($map, $key, $spawnPoint) {
-                    SlotMenuSystem::send($player, new SpawnPointSlotMenu($map, $key, $spawnPoint));
+                function (Player $player) use ($map, $groupIndex, $spawnPoint) {
+                    SlotMenuSystem::send($player, new SpawnPointSlotMenu($map, $groupIndex, $spawnPoint));
                 }
             );
         }
